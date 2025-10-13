@@ -925,6 +925,7 @@ body {
     line-height: 18px;
     color: #000000;
     margin-bottom: 10px;
+    text-align: left;
 }
 .card__content {
     height: 64px;
