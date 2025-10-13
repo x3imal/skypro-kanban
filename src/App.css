@@ -91,7 +91,7 @@ body {
     width: 100vw;
     min-height: 100vh;
     overflow: hidden;
-    background-color: #F1F1F1;
+    background-color: #EAEEF6;
 }
 
 .container {
@@ -948,6 +948,23 @@ body {
     line-height: 13px;
     color: #94A6BE;
     letter-spacing: 0.2px;
+}
+
+.loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background-color: #ffffff;
+    color: #000000;
+    font-size: 20px;
+    font-weight: 500;
+    z-index: 1000;
 }
 
 @media screen and (max-width: 1200px) {
