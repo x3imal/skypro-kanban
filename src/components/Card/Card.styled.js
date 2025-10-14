@@ -36,29 +36,27 @@ export const Top = styled.div`
     justify-content: space-between;
 `;
 
-const byClass = {
-    _orange: "orange",
-    _green: "green",
-    _purple: "purple",
-};
+const normalizeKey = (str = "") => str.toLowerCase().trim().replace(/\s+/g, "");
 
 export const Badge = styled.div`
     display: inline-flex;
+    align-items: center;
     height: 20px;
     padding: 5px 14px;
     border-radius: 18px;
 
-    ${({theme, $class}) => {
-        const key = byClass[$class] || "gray";
-        const {bg, fg} = theme.colors.badge[key];
-        return css`background: ${bg};
-            color: ${fg};`;
+    ${({theme, $category}) => {
+        const key = normalizeKey($category);
+        const {bg, fg} = theme.colors.badge[key] || theme.colors.badge.gray;
+        return css`
+            background: ${bg};
+            color: ${fg};
+        `;
     }}
     p {
         font-size: 10px;
         font-weight: 600;
         line-height: 10px;
-        ${({$class}) => $class ? "" : ""};
     }
 `;
 

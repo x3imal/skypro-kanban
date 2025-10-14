@@ -1,31 +1,18 @@
-import { Item, Box, Top, Badge, DotsBtn, Title, Content, DateRow } from "./Card.styled";
+import {Item, Box, Top, Badge, DotsBtn, Title, Content, DateRow} from "./Card.styled";
 
-const topicToClass = (topic) => {
-    if (topic === "Web Design") return "_orange";
-    if (topic === "Research") return "_green";
-    return "_purple";
-};
-
-export default function Card({
-                                 category,
-                                 title = "Название задачи",
-                                 date = "30.10.23",
-                                 icon
-                             }) {
-    const colorClass = topicToClass(category);
-
+export default function Card({category, title = "Название задачи", date = "30.10.23", icon}) {
     return (
         <Item>
             <Box>
                 <Top>
-                    <Badge $class={colorClass}>
+                    <Badge $category={category}>
                         <p>{category}</p>
                     </Badge>
                     <a href="#popBrowse" target="_self" aria-label="open">
                         <DotsBtn>
-                            <div />
-                            <div />
-                            <div />
+                            <div/>
+                            <div/>
+                            <div/>
                         </DotsBtn>
                     </a>
                 </Top>
