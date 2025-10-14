@@ -1,8 +1,10 @@
-export default function Column({ title, children }) {
+import {Column as SColumn, ColumnTitle, Cards} from "./Column.styled";
+
+export default function Column({title, children}) {
     return (
-        <div className="main__column column">
-            <div className="column__title"><p>{title}</p></div>
-            <div className="cards">{children}</div>
-        </div>
+        <SColumn>
+            <ColumnTitle><p>{title}</p></ColumnTitle>
+            <Cards>{children}</Cards>
+        </SColumn>
     );
 }
