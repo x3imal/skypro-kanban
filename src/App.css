@@ -91,7 +91,7 @@ body {
     width: 100vw;
     min-height: 100vh;
     overflow: hidden;
-    background-color: #F1F1F1;
+    background-color: #EAEEF6;
 }
 
 .container {
@@ -776,35 +776,32 @@ body {
     width: 85px;
 }
 .header__nav {
-    max-width: 290px;
-    padding: 0;
+    gap: 20px;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-end;
 }
-.header__btn-main-new {
+.header__btn-main-new{
     width: 178px;
     height: 30px;
     border-radius: 4px;
     background-color: #565EEF;
-    color: #FFFFFF;
+    color: #fff;
     border: none;
     font-size: 14px;
-    line-height: 1;
     font-weight: 500;
-    margin-right: 20px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
 }
 .header__btn-main-new a {
     color: #FFFFFF;
 }
 .header__user {
-    height: 20px;
-    display: flex;
-    flex-wrap: nowrap;
+    display: inline-flex;
     align-items: center;
-    justify-content: center;
-    font-size: 14px;
-    line-height: 20px;
+    height: 30px;
     color: #565EEF;
 }
 .header__user::after {
@@ -928,6 +925,7 @@ body {
     line-height: 18px;
     color: #000000;
     margin-bottom: 10px;
+    text-align: left;
 }
 .card__content {
     height: 64px;
@@ -950,6 +948,18 @@ body {
     line-height: 13px;
     color: #94A6BE;
     letter-spacing: 0.2px;
+}
+
+.loader {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 100%;
+    height: 60vh;
+    font-size: 16px;
+    font-weight: 400;
+    color: #0e0e0e;
 }
 
 @media screen and (max-width: 1200px) {
