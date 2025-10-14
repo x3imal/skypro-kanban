@@ -1,12 +1,6 @@
 import Column from "../Column/Column.jsx";
 import Card from "../Card/Card.jsx";
 
-const colorByTopic = (topic) => {
-    if (topic === "Web Design") return "_orange";
-    if (topic === "Research") return "_green";
-    return "_purple";
-};
-
 export default function ColumnList({ statuses = [], cards = [] }) {
     return (
         <>
@@ -20,7 +14,6 @@ export default function ColumnList({ statuses = [], cards = [] }) {
                                 category={card.topic}
                                 title={card.title}
                                 date={card.date}
-                                colorClass={colorByTopic(card.topic)}
                             />
                         ))}
                 </Column>

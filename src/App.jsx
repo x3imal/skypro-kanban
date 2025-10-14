@@ -13,19 +13,19 @@ import PopExit from "./components/PopExit/PopExit.jsx";
 
 import { Wrapper } from "./App.styled";
 import { cardsData } from "./data.js";
+import {STATUSES} from "./constants/statuses.js";
 
 export default function App() {
-    const STATUSES = ["Без статуса", "Нужно сделать", "В работе", "Тестирование", "Готово"];
-
     const [isLoading, setIsLoading] = useState(true);
     const [cards, setCards] = useState([]);
 
+    //TODO нужен реальный фетч
     useEffect(() => {
-        const timer = setTimeout(() => {
+        const t = setTimeout(() => {
             setCards(cardsData);
             setIsLoading(false);
-        }, 1500);
-        return () => clearTimeout(timer);
+        }, 800);
+        return () => clearTimeout(t);
     }, []);
 
     return (
