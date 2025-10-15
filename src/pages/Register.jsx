@@ -1,44 +1,94 @@
 import styled from "styled-components";
-import { useAuth } from "../auth/AuthContext.jsx";
-import { useLocation, Link, Navigate } from "react-router-dom";
-import { useState } from "react";
+import {useAuth} from "../auth/AuthContext.jsx";
+import {useLocation, Link, Navigate} from "react-router-dom";
+import {useState} from "react";
 
 const Page = styled.div`
-    min-height:100dvh;
-    display:flex; align-items:center; justify-content:center;
+    min-height: 100dvh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background: ${({theme}) => theme.colors.bg};
 `;
 
 const Box = styled.form`
-    width:360px;
-    background:#fff;
-    border:0.7px solid #D4DBE5;
-    border-radius:10px;
-    padding:24px 20px;
-    box-shadow:${({theme}) => theme.shadow.card};
+    width: 368px;
+    background: #fff;
+    border: 0.7px solid #D4DBE5;
+    border-radius: 10px;
+    padding: 50px 60px;
+    box-shadow: ${({theme}) => theme.shadow.card};
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 
-    h1{ font-size:20px; margin-bottom:14px; }
-    input{
-        width:100%; height:36px; margin:8px 0; padding:0 10px;
-        border:0.7px solid rgba(148,166,190,0.4); border-radius:8px; outline:none;
+    h1 {
+        margin: 0 0 10px 0;
+        text-align: center;
+        font-size: 24px;
+        line-height: 30px;
+        font-weight: 700;
+        letter-spacing: -0.4px;
     }
-    button{
-        width:100%; height:36px; margin-top:10px;
-        background:${({theme})=>theme.colors.brand}; color:#fff;
-        border:none; border-radius:4px; cursor:pointer;
+
+    input {
+        width: 100%;
+        height: 36px;
+        padding: 0 12px;
+        border-radius: 8px;
+        border: 0.7px solid rgba(148, 166, 190, 0.4);
+        outline: none;
+        font-size: 14px;
     }
-    p{ margin-top:10px; }
+
+    input::placeholder {
+        color: #94A6BE;
+    }
+
+    button {
+        width: 100%;
+        height: 36px;
+        margin-top: 10px;
+        border: none;
+        border-radius: 4px;
+        background: ${({theme}) => theme.colors.brand};
+        color: #fff;
+        font-weight: 500;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background: ${({theme}) => theme.colors.hoverBrand};
+    }
+
+    .muted {
+        margin-top: 10px;
+        text-align: center;
+        color: #94A6BE;
+        font-size: 14px;
+    }
+
+    .muted a {
+        color: #94A6BE;
+        text-decoration: underline;
+        transition: color .2s ease;
+    }
+
+    .muted a:hover {
+        color: ${({theme}) => theme.colors.brand};
+    }
 `;
 
 export default function Register() {
-    const { login, isAuth } = useAuth();
+    const {login, isAuth} = useAuth();
     const loc = useLocation();
     const to = loc.state?.from?.pathname || "/";
 
+    const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-    if (isAuth) return <Navigate to={to} replace />;
+    if (isAuth) return <Navigate to={to} replace/>;
 
     const onSubmit = (e) => {
         e.preventDefault();
@@ -49,19 +99,33 @@ export default function Register() {
         <Page>
             <Box onSubmit={onSubmit}>
                 <h1>Регистрация</h1>
+
                 <input
-                    placeholder="Email"
+                    placeholder="Имя"
+                    value={name}
+                    onChange={e => setName(e.target.value)}
+                    autoComplete="name"
+                />
+                <input
+                    placeholder="Эл. почта"
+                    type="email"
                     value={email}
-                    onChange={e=>setEmail(e.target.value)}
+                    onChange={e => setEmail(e.target.value)}
+                    autoComplete="email"
                 />
                 <input
                     placeholder="Пароль"
                     type="password"
                     value={password}
-                    onChange={e=>setPassword(e.target.value)}
+                    onChange={e => setPassword(e.target.value)}
+                    autoComplete="new-password"
                 />
-                <button type="submit">Создать аккаунт</button>
-                <p>Уже есть аккаунт? <Link to="/login">Войти</Link></p>
+
+                <button type="submit">Зарегистрироваться</button>
+
+                <p className="muted">
+                    Уже есть аккаунт? <Link to="/login">Войдите здесь</Link>
+                </p>
             </Box>
         </Page>
     );
