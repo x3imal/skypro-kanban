@@ -1,21 +1,33 @@
-export default function PopExit() {
-    return (
-        <div className="pop-exit" id="popExit">
-            <div className="pop-exit__container">
-                <div className="pop-exit__block">
-                    <div className="pop-exit__ttl">
-                        <h2>Выйти из аккаунта?</h2>
-                    </div>
-                    <div className="pop-exit__form-group">
-                        <button className="pop-exit__exit-yes _btn-bg">
-                            <a href="#">Да, выйти</a>
+import { useEffect } from "react";
+import { createPortal } from "react-dom";
+import { Overlay, Container, Block, Title, BtnRow } from "./PopExit.styled.js";
+
+export default function PopExit({ open, onClose, onConfirm }) {
+    useEffect(() => {
+        if (!open) return;
+        const onKey = (e) => e.key === "Escape" && onClose?.();
+        window.addEventListener("keydown", onKey);
+        return () => window.removeEventListener("keydown", onKey);
+    }, [open, onClose]);
+
+    if (!open) return null;
+
+    return createPortal(
+        <Overlay onClick={onClose}>
+            <Container onClick={(e) => e.stopPropagation()}>
+                <Block>
+                    <Title>Выйти из аккаунта?</Title>
+                    <BtnRow>
+                        <button className="_btn-bg" type="button" onClick={() => onConfirm?.()}>
+                            Да, выйти
                         </button>
-                        <button className="pop-exit__exit-no _btn-bor">
-                            <a href="#">Отмена</a>
+                        <button type="button" onClick={onClose}>
+                            Отмена
                         </button>
-                    </div>
-                </div>
-            </div>
-        </div>
+                    </BtnRow>
+                </Block>
+            </Container>
+        </Overlay>,
+        document.body
     );
 }

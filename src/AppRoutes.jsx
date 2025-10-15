@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import ProtectedRoute from "./routes/ProtectedRoute.jsx";
 
 import MainPage from "./pages/MainPage.jsx";
@@ -19,7 +19,7 @@ export default function AppRoutes(){
             <Route element={<ProtectedRoute/>}>
                     <Route index element={<MainPage/>}/>
                     <Route path="/" element={<MainPage/>}/>
-                    <Route path="/task/:id" element={<TaskView/>}/>
+                    <Route path="/card/:id" element={<TaskView/>}/>
                     <Route path="/exit" element={<ExitPage/>}/>
             </Route>
 

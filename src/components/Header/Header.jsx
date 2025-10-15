@@ -1,21 +1,48 @@
-import {useState} from "react";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import PopUser from "../PopUser/PopUser.jsx";
-import {Header as SHeader, Container, HeaderBar, Logo, Nav, PrimaryBtn, UserLink} from "./Header.styled";
+import PopExit from "../PopExit/PopExit.jsx";
+import { useAuth } from "../../auth/AuthContext.jsx";
+
+import {
+    Header as SHeader,
+    Container,
+    HeaderBar,
+    Logo,
+    Nav,
+    PrimaryBtn,
+    UserLink,
+} from "./Header.styled";
 
 export default function Header() {
     const [isUserOpen, setIsUserOpen] = useState(false);
-    const toggleUser = () => setIsUserOpen(p => !p);
+    const [isExitOpen, setIsExitOpen] = useState(false);
+    const { logout } = useAuth();
+    const navigate = useNavigate();
+
+    const toggleUser = () => setIsUserOpen((p) => !p);
+
+    const handleConfirmExit = () => {
+        logout();
+        setIsExitOpen(false);
+        navigate("/login", { replace: true });
+    };
 
     return (
         <SHeader>
             <Container>
                 <HeaderBar>
                     <Logo className="_show _light">
-                        <a href="#"><img src="/logo.png" alt="logo"/></a>
+                        <Link to="/">
+                            <img src="/logo.png" alt="logo" />
+                        </Link>
                     </Logo>
 
                     <Nav>
-                        <PrimaryBtn href="#popNewCard" className="_hover02">Создать новую задачу</PrimaryBtn>
+                        <PrimaryBtn as={Link} to="/card/new" className="_hover02">
+                            Создать новую задачу
+                        </PrimaryBtn>
+
                         <UserLink
                             href="#"
                             className="_hover02"
@@ -28,7 +55,20 @@ export default function Header() {
                             Ivan Ivanov
                         </UserLink>
 
-                        <PopUser isOpen={isUserOpen} onClose={() => setIsUserOpen(false)}/>
+                        <PopUser
+                            isOpen={isUserOpen}
+                            onClose={() => setIsUserOpen(false)}
+                            onAskLogout={() => {
+                                setIsUserOpen(false);
+                                setIsExitOpen(true);
+                            }}
+                        />
+
+                        <PopExit
+                            open={isExitOpen}
+                            onClose={() => setIsExitOpen(false)}
+                            onConfirm={handleConfirmExit}
+                        />
                     </Nav>
                 </HeaderBar>
             </Container>

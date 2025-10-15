@@ -12,7 +12,7 @@ export const Column = styled.section`
 `;
 
 export const ColumnTitle = styled.div`
-  margin:15px 0;
+  margin:20px 0;
 
   p{
     color:${({theme}) => theme.colors.muted};
