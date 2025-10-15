@@ -1,7 +1,7 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import ProtectedRoute from "./routes/ProtectedRoute.jsx";
 import Layout from "./pages/Layout.jsx";
-import Board from "./pages/Board.jsx";
+import MainPage from "./pages/MainPage.jsx";
 import Login from "./pages/Login.jsx";
 import Register from "./pages/Register.jsx";
 import TaskCreate from "./pages/TaskCreate.jsx";
@@ -17,8 +17,8 @@ export default function AppRoutes(){
 
             <Route element={<ProtectedRoute/>}>
                 <Route element={<Layout/>}>
-                    <Route index element={<Board/>}/>
-                    <Route path="/" element={<Board/>}/>
+                    <Route index element={<MainPage/>}/>
+                    <Route path="/" element={<MainPage/>}/>
                     <Route path="/task/new" element={<TaskCreate/>}/>
                     <Route path="/task/:id" element={<TaskView/>}/>
                     <Route path="/task/:id/edit" element={<TaskEdit/>}/>
