@@ -12,6 +12,10 @@ export const theme = {
             copywriting: { bg: "#E9D4FF", fg: "#9A48F1" },
             gray: { bg: "#94A6BE", fg: "#FFFFFF" },
         },
+
+    },
+    spacing: {
+        cardGap: "10px",
     },
     radius: { sm: "4px", md: "8px", lg: "10px", pill: "24px" },
     shadow: { card: "0 4px 67px -12px rgba(0,0,0,.13)" },

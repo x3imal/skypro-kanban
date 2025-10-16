@@ -13,6 +13,7 @@ const show = keyframes`
 
 export const Item = styled.div`
     animation: ${show} 500ms linear;
+    margin-bottom: ${({theme}) => theme.spacing?.cardGap || "10px"};
 `;
 
 export const Box = styled.article`
