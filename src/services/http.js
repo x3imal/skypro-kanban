@@ -11,25 +11,25 @@ async function request(path, { method = "GET", body, token } = {}) {
         body: body ? JSON.stringify(body) : undefined,
     });
 
-    const data = await res.json().catch(() => ({}));
+    let data = null;
+    try { data = await res.json(); } catch { data = null; }
 
     if (!res.ok) {
         const msg =
-            data?.error ||
-            data?.message ||
-            `${res.status} ${res.statusText}` ||
-            "Request error";
+            data?.error || data?.message || `${res.status} ${res.statusText}`;
         const err = new Error(msg);
         err.status = res.status;
         err.payload = data;
         throw err;
     }
-
-    return data;
+    return data ?? {};
 }
 
 export const http = {
     get: (path, opts = {}) => request(path, { ...opts, method: "GET" }),
     post: (path, body, opts = {}) =>
         request(path, { ...opts, method: "POST", body }),
+    put: (path, body, opts = {}) =>
+        request(path, { ...opts, method: "PUT", body }),
+    del: (path, opts = {}) => request(path, { ...opts, method: "DELETE" }),
 };
