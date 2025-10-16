@@ -4,6 +4,7 @@ import Main from "../components/Main/Main.jsx";
 import { useAuth } from "../auth/AuthContext.jsx";
 import { kanbanApi } from "../services/kanban";
 import {DEFAULT_STATUSES} from "../constants/statuses.js";
+import PopBrowse from "../components/PopBrowse/PopBrowse.jsx";
 
 
 //TODO переделать в нормальный вид
@@ -58,6 +59,7 @@ export default function MainPage() {
     const [cards, setCards] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [browseId, setBrowseId] = useState(null);
 
     useEffect(() => {
         let cancelled = false;
@@ -81,10 +83,24 @@ export default function MainPage() {
         return base;
     }, [cards]);
 
+    const current = useMemo(() => cards.find(c => c.id === browseId) || null, [cards, browseId]);
+
     return (
         <>
             <Header />
-            <Main cards={cards} isLoading={loading} error={error} />
+            <Main
+                cards={cards}
+                isLoading={loading}
+                error={error}
+                onOpenCard={setBrowseId}
+            />
+            <PopBrowse
+                open={!!browseId}
+                card={current}
+                onClose={() => setBrowseId(null)}
+                onEdit={(id) => navigate(`/task/${id}/edit`)}
+                onDelete={(id) => handleDelete(id)}
+            />
         </>
     );
 }
