@@ -1,4 +1,4 @@
-import { http } from "./http";
+import { http } from "./http.js";
 
 export const authApi = {
     listUsers: (token) => http.get("/user", { token }),
