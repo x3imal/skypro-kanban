@@ -1,5 +1,6 @@
 import Calendar from "../Calendar/Calendar.jsx";
 
+//TODO подключить и переработать
 export default function PopNewCard() {
     return (
         <div className="pop-new-card" id="popNewCard">

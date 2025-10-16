@@ -5,6 +5,8 @@ import { useAuth } from "../auth/AuthContext.jsx";
 import { kanbanApi } from "../services/kanban";
 import {DEFAULT_STATUSES} from "../constants/statuses.js";
 
+
+//TODO переделать в нормальный вид
 function normalizeStatus(s) {
     if (!s) return "Без статуса";
     const v = String(s).trim();
@@ -73,14 +75,11 @@ export default function MainPage() {
         })();
         return () => { cancelled = true; };
     }, [token]);
-
-
-    const grouped = useMemo(() => {
+    useMemo(() => {
         const base = Object.fromEntries(DEFAULT_STATUSES.map(s => [s, []]));
         for (const c of cards) base[c.status]?.push(c);
         return base;
     }, [cards]);
-
 
     return (
         <>

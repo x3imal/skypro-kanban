@@ -1,5 +1,6 @@
 import Calendar from "../Calendar/Calendar.jsx";
 
+//TODO подключить и переработать
 export default function PopBrowse() {
     return (
         <div className="pop-browse" id="popBrowse">

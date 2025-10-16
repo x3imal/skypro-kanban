@@ -1,5 +1,7 @@
 import {Item, Box, Top, Badge, DotsBtn, Title, Content, DateRow} from "./Card.styled";
 
+
+//TODO убрать статику
 export default function Card({category, title = "Название задачи", date = "30.10.23", icon}) {
     return (
         <Item>

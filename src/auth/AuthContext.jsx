@@ -1,6 +1,8 @@
 import { createContext, useContext, useMemo, useState } from "react";
 import {authApi} from "../services/auth.js";
 
+
+//TODO проверить хуки
 export const useAuth = () => useContext(AuthCtx);
 const AuthCtx = createContext(null);
 
