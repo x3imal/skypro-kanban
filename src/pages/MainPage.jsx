@@ -1,13 +1,15 @@
 import { useEffect, useMemo, useState } from "react";
+import { useLocation, useNavigate, matchPath } from "react-router-dom";
+
 import Header from "../components/Header/Header.jsx";
 import Main from "../components/Main/Main.jsx";
+import PopBrowse from "../components/PopBrowse/PopBrowse.jsx";
+import PopNewCard from "../components/PopNewCard/PopNewCard.jsx";
+
 import { useAuth } from "../auth/AuthContext.jsx";
 import { kanbanApi } from "../services/kanban";
-import {DEFAULT_STATUSES} from "../constants/statuses.js";
-import PopBrowse from "../components/PopBrowse/PopBrowse.jsx";
+import { DEFAULT_STATUSES } from "../constants/statuses.js";
 
-
-//TODO переделать в нормальный вид
 function normalizeStatus(s) {
     if (!s) return "Без статуса";
     const v = String(s).trim();
@@ -56,15 +58,32 @@ function mapTask(apiTask) {
 
 export default function MainPage() {
     const { token } = useAuth();
+    const navigate = useNavigate();
+    const { pathname } = useLocation();
+
     const [cards, setCards] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [browseId, setBrowseId] = useState(null);
+
+    // Попап: создание новой задачи
+    const isCreate = pathname === "/task/new";
+
+    // Попап: просмотр задачи по ID из URL
+    const match = matchPath("/task/:id", pathname);
+    const viewedId = match?.params?.id || null;
+
+    // Закрытие модалок — возвращение назад
+    const closeToRoot = () => {
+        if (window.history.length > 1) navigate(-1);
+        else navigate("/", { replace: true });
+    };
 
     useEffect(() => {
         let cancelled = false;
+
         (async () => {
-            setLoading(true); setError(null);
+            setLoading(true);
+            setError(null);
             try {
                 const { tasks } = await kanbanApi.list(token);
                 const mapped = (tasks || []).map(mapTask);
@@ -75,31 +94,45 @@ export default function MainPage() {
                 if (!cancelled) setLoading(false);
             }
         })();
-        return () => { cancelled = true; };
+
+        return () => {
+            cancelled = true;
+        };
     }, [token]);
+
+    // Раскидываем задачи по статусам
     useMemo(() => {
-        const base = Object.fromEntries(DEFAULT_STATUSES.map(s => [s, []]));
+        const base = Object.fromEntries(DEFAULT_STATUSES.map((s) => [s, []]));
         for (const c of cards) base[c.status]?.push(c);
         return base;
     }, [cards]);
 
-    const current = useMemo(() => cards.find(c => c.id === browseId) || null, [cards, browseId]);
+    // Получаем задачу по ID (если открыта модалка просмотра)
+    const current = useMemo(
+        () => cards.find((c) => c.id === viewedId) || null,
+        [cards, viewedId]
+    );
 
     return (
         <>
             <Header />
+
             <Main
                 cards={cards}
                 isLoading={loading}
                 error={error}
-                onOpenCard={setBrowseId}
+                onOpenCard={(id) => navigate(`/task/${id}`)}
             />
+
             <PopBrowse
-                open={!!browseId}
+                open={!!viewedId}
                 card={current}
-                onClose={() => setBrowseId(null)}
-                onEdit={(id) => navigate(`/task/${id}/edit`)}
-                onDelete={(id) => handleDelete(id)}
+                onClose={closeToRoot}
+            />
+
+            <PopNewCard
+                open={isCreate}
+                onClose={closeToRoot}
             />
         </>
     );

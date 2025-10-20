@@ -39,7 +39,12 @@ export default function Header() {
                     </Logo>
 
                     <Nav>
-                        <PrimaryBtn as={Link} to="/card/new" className="_hover02">
+                        <PrimaryBtn
+                            as="button"
+                            type="button"
+                            className="_hover02"
+                            onClick={() => navigate("/task/new")}
+                        >
                             Создать новую задачу
                         </PrimaryBtn>
 
