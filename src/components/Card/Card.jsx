@@ -6,7 +6,7 @@ export default function Card({
                                  title = "Название задачи",
                                  date = "30.10.23",
                                  icon,
-                                 onOpen, // добавили колбэк
+                                 onOpen,
                              }) {
     const handleOpen = (e) => {
         e.stopPropagation();

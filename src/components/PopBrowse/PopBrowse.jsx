@@ -1,25 +1,16 @@
-import { useEffect } from "react";
 import Calendar from "../Calendar/Calendar.jsx";
 import {
     Overlay, Box, Content, Top, Ttl, CatBadge,
     Wrap, Form, Field, Label, StatusPill, Area,
-    Footer, Btn, BtnDanger, BtnPrimary, CalendarCol, SectionLabel
+    Footer, Btn, BtnDanger, BtnPrimary, CalendarCol,
 } from "./PopBrowse.styled";
 
 export default function PopBrowse({ open, card, onClose, onEdit, onDelete }) {
-    useEffect(() => {
-        if (!open) return;
-        const h = (e) => e.key === "Escape" && onClose?.();
-        window.addEventListener("keydown", h);
-        return () => window.removeEventListener("keydown", h);
-    }, [open, onClose]);
-
     if (!open || !card) return null;
 
     const categoryKey = (card.topic || card.category || "gray")
         .toLowerCase()
         .replace(/\s+/g, "");
-
 
     return (
         <Overlay open={open} onClick={onClose}>
@@ -51,7 +42,6 @@ export default function PopBrowse({ open, card, onClose, onEdit, onDelete }) {
                         </Form>
 
                         <CalendarCol>
-                            <SectionLabel>Даты</SectionLabel>
                             <Calendar activeDay={9} showHint={false} />
                         </CalendarCol>
                     </Wrap>

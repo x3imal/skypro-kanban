@@ -147,6 +147,7 @@ export const Area = styled.textarea`
 
 export const CalendarCol = styled.div`
     width: 182px;
+    margin-top: 74px;
 
     ${sm} {
         width: 100%;

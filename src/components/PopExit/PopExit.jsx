@@ -22,7 +22,7 @@ export default function PopExit({ open, onClose, onConfirm }) {
                             Да, выйти
                         </button>
                         <button type="button" onClick={onClose}>
-                            Отмена
+                            Нет, остаться
                         </button>
                     </BtnRow>
                 </Block>
