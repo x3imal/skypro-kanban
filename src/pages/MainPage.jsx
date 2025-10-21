@@ -6,7 +6,7 @@ import Main from "../components/Main/Main.jsx";
 import PopBrowse from "../components/PopBrowse/PopBrowse.jsx";
 import PopNewCard from "../components/PopNewCard/PopNewCard.jsx";
 
-import {useAuth} from "../auth/AuthContext.jsx";
+import {useAuth} from "../context/AuthContext.jsx";
 import {kanbanApi} from "../services/kanban";
 import {DEFAULT_STATUSES} from "../constants/statuses.js";
 import PopExit from "../components/PopExit/PopExit.jsx";

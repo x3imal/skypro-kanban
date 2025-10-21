@@ -4,7 +4,7 @@ import {theme} from "./styles/theme";
 import "./App.css";
 
 import AppRoutes from "./AppRoutes.jsx";
-import {AuthProvider} from "./auth/AuthContext.jsx";
+import {AuthProvider} from "./context/AuthContext.jsx";
 
 export default function App() {
     return (

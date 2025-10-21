@@ -4,6 +4,8 @@ import {
 } from "./Calendar.styled";
 
 export default function Calendar({activeDay = 9, showHint = false}) {
+    const weekends = [2, 3, 9, 10, 16, 17, 23, 24, 30];
+
     return (
         <Wrap>
             <Title>Даты</Title>
@@ -35,19 +37,28 @@ export default function Calendar({activeDay = 9, showHint = false}) {
                     <Cells>
                         {[...Array(31)].map((_, i) => {
                             const n = i + 1;
-                            const cls = ["_cell-day"];
-                            if (n === 8) cls.push("_current");
-                            if (n === activeDay) cls.push("_active-day");
-                            if ([2, 3, 9, 10, 16, 17, 23, 24, 30].includes(n)) cls.push("_weekend");
-                            return <Cell key={n} className={cls.join(" ")}>{n}</Cell>;
+                            return (
+                                <Cell
+                                    key={n}
+                                    $current={n === 8}
+                                    $active={n === activeDay}
+                                    $weekend={weekends.includes(n)}
+                                    $otherMonth={false}
+                                >
+                                    {n}
+                                </Cell>
+                            );
                         })}
                     </Cells>
                 </Content>
 
                 <Period>
-                    <p className="calendar__p">
-                        {showHint ? <>Выберите срок исполнения <span className="date-control"></span>.</> :
-                            <>Срок исполнения: <span className="date-control">09.10.23</span></>}
+                    <p>
+                        {showHint ? (
+                            <>Выберите срок исполнения <span className="date-control"></span></>
+                        ) : (
+                            <>Срок исполнения: <span className="date-control">09.10.23</span></>
+                        )}
                     </p>
                 </Period>
             </Block>

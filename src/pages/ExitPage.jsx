@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../auth/AuthContext.jsx";
+import { useAuth } from "../context/AuthContext.jsx";
 
 export default function ExitPage() {
     const { logout } = useAuth();

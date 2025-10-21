@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useAuth } from "../auth/AuthContext.jsx";
+import { useAuth } from "../context/AuthContext.jsx";
 import { useLocation, Link, Navigate } from "react-router-dom";
 import { useState } from "react";
 
