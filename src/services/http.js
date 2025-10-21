@@ -12,11 +12,15 @@ async function request(path, { method = "GET", body, token } = {}) {
     });
 
     let data = null;
-    try { data = await res.json(); } catch { data = null; }
+    try {
+        data = await res.json();
+    } catch {
+
+        data = null;
+    }
 
     if (!res.ok) {
-        const msg =
-            data?.error || data?.message || `${res.status} ${res.statusText}`;
+        const msg = data?.error || data?.message || `${res.status} ${res.statusText}`;
         const err = new Error(msg);
         err.status = res.status;
         err.payload = data;
