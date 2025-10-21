@@ -12,7 +12,7 @@ export const Overlay = styled.div`
 
 export const Dialog = styled.div`
   position: relative;
-  background: ${({ theme }) => theme?.colors?.bg || "#FFFFFF"};
+    background: ${({ theme }) => theme.colors.white || "#FFFFFF"};
   border-radius: 10px;
   border: 0.7px solid #D4DBE5;
   box-shadow: 0 10px 39px rgba(26,56,101,0.21);
