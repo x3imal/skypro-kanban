@@ -4,7 +4,6 @@ import {
     Dialog,
     Content,
     Title,
-    Close,
     Wrap,
     Form,
     Subttl,
@@ -28,7 +27,6 @@ export default function PopNewCard({open = false, onClose}) {
             <Dialog onClick={(e) => e.stopPropagation()}>
                 <Content>
                     <Title>Создание задачи</Title>
-                    <Close onClick={close} aria-label="Закрыть">×</Close>
 
                     <Wrap>
                         <Form id="formNewCard" action="#">
@@ -59,9 +57,9 @@ export default function PopNewCard({open = false, onClose}) {
                     <Categories>
                         <CategoriesTitle>Категория</CategoriesTitle>
                         <Themes>
-                            <ThemePill $variant="orange" $active>Web Design</ThemePill>
-                            <ThemePill $variant="green">Research</ThemePill>
-                            <ThemePill $variant="purple">Copywriting</ThemePill>
+                            <ThemePill $variant="webdesign" $active>Web Design</ThemePill>
+                            <ThemePill $variant="research">Research</ThemePill>
+                            <ThemePill $variant="copywriting">Copywriting</ThemePill>
                         </Themes>
                     </Categories>
 

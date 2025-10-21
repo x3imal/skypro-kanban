@@ -1,4 +1,5 @@
 import styled, { css } from "styled-components";
+import {normalizeKey} from "../../utils/normalizeKey.js";
 
 export const Overlay = styled.div`
   position: fixed;
@@ -38,19 +39,6 @@ export const Title = styled.h3`
   font-weight: 600;
   line-height: 24px;
   margin: 0 0 20px 0;
-`;
-
-export const Close = styled.button`
-  position: absolute;
-  top: 20px;
-  right: 30px;
-  color: #94A6BE;
-  cursor: pointer;
-  border: 0;
-  background: transparent;
-  font-size: 18px;
-  line-height: 1;
-  &:hover { color: #000; }
 `;
 
 export const Wrap = styled.div`
@@ -148,29 +136,31 @@ export const Themes = styled.div`
   gap: 7px;
 `;
 
-const themeColors = {
-    orange: { bg: "#FFE4C2", fg: "#FF6D00" },
-    green:  { bg: "#B4FDD1", fg: "#06B16E" },
-    purple: { bg: "#E9D4FF", fg: "#9A48F1" },
-    gray:   { bg: "#94A6BE", fg: "#FFFFFF" },
-};
-
 export const ThemePill = styled.button.attrs({ type: "button" })`
-  display: inline-flex;
-  align-items: center;
-  height: 30px;
-  padding: 8px 20px;
-  border-radius: 24px;
-  border: 0;
-  background: ${({ $variant }) => themeColors[$variant || "orange"].bg};
-  color: ${({ $variant }) => themeColors[$variant || "orange"].fg};
-  opacity: ${({ $active }) => ($active ? 1 : 0.4)};
-  font-size: 14px;
-  font-weight: 600;
-  line-height: 14px;
-  white-space: nowrap;
-  cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    height: 30px;
+    padding: 8px 20px;
+    border-radius: 24px;
+    border: 0;
+
+    ${({theme, $variant = "webdesign"}) => {
+        const key = normalizeKey($variant);
+        const badge = theme.colors.badge[key] ?? theme.colors.badge.webdesign;
+        return `
+      background: ${badge.bg};
+      color: ${badge.fg};
+    `;
+    }}
+
+    opacity: ${({$active}) => ($active ? 1 : 0.4)};
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 14px;
+    white-space: nowrap;
+    cursor: pointer;
 `;
+
 
 export const CreateButton = styled.button`
   width: 132px;
