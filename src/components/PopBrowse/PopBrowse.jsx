@@ -3,7 +3,7 @@ import Calendar from "../Calendar/Calendar.jsx";
 import {
     Overlay, Box, Content, Top, Ttl, CatBadge,
     Wrap, Form, Field, Label, StatusPill, Area,
-    Footer, Btn, BtnDanger, BtnPrimary, Mobile
+    Footer, Btn, BtnDanger, BtnPrimary, CalendarCol, SectionLabel
 } from "./PopBrowse.styled";
 
 export default function PopBrowse({ open, card, onClose, onEdit, onDelete }) {
@@ -16,7 +16,10 @@ export default function PopBrowse({ open, card, onClose, onEdit, onDelete }) {
 
     if (!open || !card) return null;
 
-    const categoryKey = (card.topic || card.category || "gray").toLowerCase();
+    const categoryKey = (card.topic || card.category || "gray")
+        .toLowerCase()
+        .replace(/\s+/g, "");
+
 
     return (
         <Overlay open={open} onClick={onClose}>
@@ -24,19 +27,19 @@ export default function PopBrowse({ open, card, onClose, onEdit, onDelete }) {
                 <Content>
                     <Top>
                         <Ttl>{card.title || "Название задачи"}</Ttl>
-                        <CatBadge $category={categoryKey} className="theme-top">
+                        <CatBadge $category={categoryKey}>
                             <p>{card.topic || card.category || "Web Design"}</p>
                         </CatBadge>
                     </Top>
 
-                    <Mobile.Wrap>
-                        <Mobile.Form as={Form} id="formBrowseCard" action="#">
+                    <Wrap>
+                        <Form id="formBrowseCard" action="#">
                             <Field>
                                 <Label>Статус</Label>
                                 <StatusPill>{card.status || "Нужно сделать"}</StatusPill>
                             </Field>
 
-                            <Field style={{ marginTop: 11 }}>
+                            <Field>
                                 <Label>Описание задачи</Label>
                                 <Area
                                     readOnly
@@ -45,12 +48,13 @@ export default function PopBrowse({ open, card, onClose, onEdit, onDelete }) {
                                     value={card.description || ""}
                                 />
                             </Field>
-                        </Mobile.Form>
+                        </Form>
 
-                        <div style={{ width: 182 }}>
+                        <CalendarCol>
+                            <SectionLabel>Даты</SectionLabel>
                             <Calendar activeDay={9} showHint={false} />
-                        </div>
-                    </Mobile.Wrap>
+                        </CalendarCol>
+                    </Wrap>
 
                     <Footer>
                         <div className="btn-group">

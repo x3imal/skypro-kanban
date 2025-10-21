@@ -34,7 +34,7 @@ const Box = styled.form`
     button:hover{ background: ${({theme})=>theme.colors.hoverBrand}; }
 
     .muted{ margin-top:10px; text-align:center; color:#94A6BE; font-size:14px; }
-    .muted a{ color:#94A6BE; text-decoration:none; transition:color .2s; }
+    .muted a{ color:#94A6BE; text-decoration:underline; transition:color .2s; }
     .muted a:hover{ color:${({theme})=>theme.colors.brand}; }
 
     .error{ color:#E24545; text-align:center; margin-top:4px; font-size:14px; }
