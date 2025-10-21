@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import PopUser from "../PopUser/PopUser.jsx";
-import PopExit from "../PopExit/PopExit.jsx";
-import { useAuth } from "../../auth/AuthContext.jsx";
 
 import {
     Header as SHeader,
@@ -16,17 +14,9 @@ import {
 
 export default function Header() {
     const [isUserOpen, setIsUserOpen] = useState(false);
-    const [isExitOpen, setIsExitOpen] = useState(false);
-    const { logout } = useAuth();
     const navigate = useNavigate();
 
     const toggleUser = () => setIsUserOpen((p) => !p);
-
-    const handleConfirmExit = () => {
-        logout();
-        setIsExitOpen(false);
-        navigate("/login", { replace: true });
-    };
 
     return (
         <SHeader>
@@ -65,14 +55,8 @@ export default function Header() {
                             onClose={() => setIsUserOpen(false)}
                             onAskLogout={() => {
                                 setIsUserOpen(false);
-                                setIsExitOpen(true);
+                                navigate("/exit");
                             }}
-                        />
-
-                        <PopExit
-                            open={isExitOpen}
-                            onClose={() => setIsExitOpen(false)}
-                            onConfirm={handleConfirmExit}
                         />
                     </Nav>
                 </HeaderBar>

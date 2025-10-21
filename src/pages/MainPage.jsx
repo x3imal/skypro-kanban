@@ -1,14 +1,15 @@
-import { useEffect, useMemo, useState } from "react";
-import { useLocation, useNavigate, matchPath } from "react-router-dom";
+import {useEffect, useMemo, useState} from "react";
+import {useLocation, useNavigate, matchPath} from "react-router-dom";
 
 import Header from "../components/Header/Header.jsx";
 import Main from "../components/Main/Main.jsx";
 import PopBrowse from "../components/PopBrowse/PopBrowse.jsx";
 import PopNewCard from "../components/PopNewCard/PopNewCard.jsx";
 
-import { useAuth } from "../auth/AuthContext.jsx";
-import { kanbanApi } from "../services/kanban";
-import { DEFAULT_STATUSES } from "../constants/statuses.js";
+import {useAuth} from "../auth/AuthContext.jsx";
+import {kanbanApi} from "../services/kanban";
+import {DEFAULT_STATUSES} from "../constants/statuses.js";
+import PopExit from "../components/PopExit/PopExit.jsx";
 
 function normalizeStatus(s) {
     if (!s) return "Без статуса";
@@ -57,9 +58,9 @@ function mapTask(apiTask) {
 }
 
 export default function MainPage() {
-    const { token } = useAuth();
+    const {token} = useAuth();
     const navigate = useNavigate();
-    const { pathname } = useLocation();
+    const {pathname} = useLocation();
 
     const [cards, setCards] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -72,10 +73,18 @@ export default function MainPage() {
     const match = matchPath("/task/:id", pathname);
     const viewedId = match?.params?.id || null;
 
+    // Попап: выход
+    const isExit = pathname === "/exit";
+    const { logout } = useAuth();
+    const handleConfirmExit = () => {
+        logout();
+        navigate("/login", { replace: true });
+    };
+
     // Закрытие модалок — возвращение назад
     const closeToRoot = () => {
         if (window.history.length > 1) navigate(-1);
-        else navigate("/", { replace: true });
+        else navigate("/", {replace: true});
     };
 
     useEffect(() => {
@@ -85,7 +94,7 @@ export default function MainPage() {
             setLoading(true);
             setError(null);
             try {
-                const { tasks } = await kanbanApi.list(token);
+                const {tasks} = await kanbanApi.list(token);
                 const mapped = (tasks || []).map(mapTask);
                 if (!cancelled) setCards(mapped);
             } catch (e) {
@@ -115,7 +124,7 @@ export default function MainPage() {
 
     return (
         <>
-            <Header />
+            <Header/>
 
             <Main
                 cards={cards}
@@ -133,6 +142,12 @@ export default function MainPage() {
             <PopNewCard
                 open={isCreate}
                 onClose={closeToRoot}
+            />
+
+            <PopExit
+                open={isExit}
+                onClose={closeToRoot}
+                onConfirm={handleConfirmExit }
             />
         </>
     );
