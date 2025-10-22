@@ -1,32 +1,25 @@
-import {useEffect, useMemo, useState} from "react";
-import {useLocation, useNavigate, matchPath} from "react-router-dom";
+import { useEffect, useMemo, useState } from "react";
+import { useLocation, useNavigate, matchPath } from "react-router-dom";
 
 import Header from "../components/Header/Header.jsx";
 import Main from "../components/Main/Main.jsx";
 import PopBrowse from "../components/PopBrowse/PopBrowse.jsx";
 import PopNewCard from "../components/PopNewCard/PopNewCard.jsx";
-
-import {useAuth} from "../context/AuthContext.jsx";
-import {kanbanApi} from "../services/kanban";
-import {DEFAULT_STATUSES} from "../constants/statuses.js";
 import PopExit from "../components/PopExit/PopExit.jsx";
+
+import { useAuth } from "../context/AuthContext.jsx";
+import { kanbanApi } from "../services/kanban";
+import { DEFAULT_STATUSES } from "../constants/statuses.js";
 
 function normalizeStatus(s) {
     if (!s) return "Без статуса";
     const v = String(s).trim();
     const map = {
-        noStatus: "Без статуса",
-        "no-status": "Без статуса",
-        no_status: "Без статуса",
+        none: "Без статуса",
         todo: "Нужно сделать",
-        inProcess: "В работе",
-        inprocess: "В работе",
-        in_progress: "В работе",
         inProgress: "В работе",
         testing: "Тестирование",
-        test: "Тестирование",
         done: "Готово",
-
         "Без статуса": "Без статуса",
         "Нужно сделать": "Нужно сделать",
         "В работе": "В работе",
@@ -45,6 +38,16 @@ function formatDate(iso) {
     return `${dd}.${mm}.${yy}`;
 }
 
+function toISODateOnly(input) {
+    if (!input) return undefined;
+    const d = input instanceof Date ? input : new Date(input);
+    if (Number.isNaN(d.getTime())) return undefined;
+    const yyyy = d.getFullYear();
+    const mm = String(d.getMonth() + 1).padStart(2, "0");
+    const dd = String(d.getDate()).padStart(2, "0");
+    return `${yyyy}-${mm}-${dd}`;
+}
+
 function mapTask(apiTask) {
     return {
         id: apiTask._id,
@@ -58,43 +61,35 @@ function mapTask(apiTask) {
 }
 
 export default function MainPage() {
-    const {token} = useAuth();
+    const { token, logout } = useAuth();
     const navigate = useNavigate();
-    const {pathname} = useLocation();
+    const { pathname } = useLocation();
 
     const [cards, setCards] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    // Попап: создание новой задачи
     const isCreate = pathname === "/task/new";
-
-    // Попап: просмотр задачи по ID из URL
+    const isExit = pathname === "/exit";
     const match = matchPath("/task/:id", pathname);
     const viewedId = match?.params?.id || null;
 
-    // Попап: выход
-    const isExit = pathname === "/exit";
-    const { logout } = useAuth();
+    const closeToRoot = () => {
+        if (window.history.length > 1) navigate(-1);
+        else navigate("/", { replace: true });
+    };
+
     const handleConfirmExit = () => {
         logout();
         navigate("/login", { replace: true });
     };
 
-    // Закрытие модалок — возвращение назад
-    const closeToRoot = () => {
-        if (window.history.length > 1) navigate(-1);
-        else navigate("/", {replace: true});
-    };
-
     useEffect(() => {
         let cancelled = false;
-
         (async () => {
             setLoading(true);
-            setError(null);
             try {
-                const {tasks} = await kanbanApi.list(token);
+                const { tasks } = await kanbanApi.list(token);
                 const mapped = (tasks || []).map(mapTask);
                 if (!cancelled) setCards(mapped);
             } catch (e) {
@@ -103,52 +98,95 @@ export default function MainPage() {
                 if (!cancelled) setLoading(false);
             }
         })();
-
         return () => {
             cancelled = true;
         };
     }, [token]);
 
-    // Раскидываем задачи по статусам
-    useMemo(() => {
-        const base = Object.fromEntries(DEFAULT_STATUSES.map((s) => [s, []]));
-        for (const c of cards) base[c.status]?.push(c);
-        return base;
-    }, [cards]);
+    const FIRST_STATUS = DEFAULT_STATUSES?.[0] || "Без статуса";
 
-    // Получаем задачу по ID (если открыта модалка просмотра)
+    const handleCreate = async ({ title, description, topic, due }) => {
+        const allowed = ["Web Design", "Research", "Copywriting"];
+        const safeTopic = allowed.includes(topic) ? topic : "Research";
+
+        const onlyDate = toISODateOnly(due);
+        const body = {
+            title: title.trim(),
+            description: description.trim(),
+            topic: safeTopic,
+            ...(onlyDate ? { date: onlyDate } : {}),
+        };
+
+        const tmpId = `tmp-${Date.now()}`;
+        const optimistic = {
+            id: tmpId,
+            title: body.title || "Название задачи",
+            topic: safeTopic,
+            status: FIRST_STATUS,
+            date: onlyDate ? formatDate(onlyDate) : "",
+            description: body.description || "",
+            userId: null,
+        };
+        setCards((prev) => [optimistic, ...prev]);
+
+        try {
+            const data = await kanbanApi.create(body, token);
+            const apiTask = data?.task || data;
+
+            const created = {
+                id: apiTask._id,
+                title: apiTask.title || optimistic.title,
+                topic: apiTask.topic || optimistic.topic,
+                status: normalizeStatus(apiTask.status) || FIRST_STATUS,
+                date: apiTask.date ? formatDate(apiTask.date) : optimistic.date,
+                description: apiTask.description || optimistic.description,
+                userId: apiTask.userId ?? optimistic.userId,
+            };
+
+            setCards((prev) => prev.map((c) => (c.id === tmpId ? created : c)));
+
+            navigate(`/task/${created.id}`, { replace: true });
+        } catch (e) {
+            setCards((prev) => prev.filter((c) => c.id !== tmpId));
+            throw new Error(e?.message || "Не удалось создать задачу");
+        }
+    };
+
+    const handleDelete = async (id) => {
+        if (!id) return;
+
+        setCards((prev) => prev.filter((c) => c.id !== id));
+
+        try {
+            await kanbanApi.remove(id, token);
+            navigate("/", { replace: true });
+        } catch (e) {
+            setCards((prev) => [...prev]);
+            alert(e.message || "Не удалось удалить задачу");
+        }
+    };
+
     const current = useMemo(
-        () => cards.find((c) => c.id === viewedId) || null,
+        () => (viewedId ? cards.find((c) => c.id === viewedId) || null : null),
         [cards, viewedId]
     );
 
     return (
         <>
-            <Header/>
-
+            <Header />
             <Main
                 cards={cards}
                 isLoading={loading}
                 error={error}
                 onOpenCard={(id) => navigate(`/task/${id}`)}
+                statuses={DEFAULT_STATUSES}
             />
 
-            <PopBrowse
-                open={!!viewedId}
-                card={current}
-                onClose={closeToRoot}
-            />
+            {!!current && <PopBrowse open card={current} onClose={closeToRoot} onDelete={handleDelete} />}
 
-            <PopNewCard
-                open={isCreate}
-                onClose={closeToRoot}
-            />
+            <PopNewCard open={isCreate} onClose={closeToRoot} onSubmit={handleCreate} />
 
-            <PopExit
-                open={isExit}
-                onClose={closeToRoot}
-                onConfirm={handleConfirmExit }
-            />
+            <PopExit open={isExit} onClose={closeToRoot} onConfirm={handleConfirmExit} />
         </>
     );
 }
