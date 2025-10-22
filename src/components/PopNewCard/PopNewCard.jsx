@@ -1,26 +1,22 @@
+import { useState } from "react";
 import Calendar from "../Calendar/Calendar.jsx";
 import {
-    Overlay,
-    Dialog,
-    Content,
-    Title,
-    Wrap,
-    Form,
-    Subttl,
-    FormBlock,
-    Input,
-    TextArea,
-    Categories,
-    CategoriesTitle,
-    Themes,
-    ThemePill,
-    CreateButton,
+    Overlay, Dialog, Content, Title, Wrap, Form, Subttl,
+    FormBlock, Input, TextArea, Categories, CategoriesTitle,
+    Themes, ThemePill, CreateButton,
 } from "./PopNewCard.styled.js";
 
-export default function PopNewCard({open = false, onClose}) {
+export default function PopNewCard({ open = false, onClose }) {
     if (!open) return null;
 
     const close = () => onClose?.();
+
+    const [due, setDue] = useState(null); // Date
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+    };
 
     return (
         <Overlay onClick={close}>
@@ -29,7 +25,7 @@ export default function PopNewCard({open = false, onClose}) {
                     <Title>Создание задачи</Title>
 
                     <Wrap>
-                        <Form id="formNewCard" action="#">
+                        <Form id="formNewCard" action="#" onSubmit={handleSubmit}>
                             <FormBlock>
                                 <Subttl htmlFor="formTitle">Название задачи</Subttl>
                                 <Input
@@ -51,7 +47,11 @@ export default function PopNewCard({open = false, onClose}) {
                             </FormBlock>
                         </Form>
 
-                        <Calendar activeDay={8} showHint/>
+                        <Calendar
+                            value={due}
+                            onChange={setDue}
+                            showHint
+                        />
                     </Wrap>
 
                     <Categories>
@@ -63,7 +63,9 @@ export default function PopNewCard({open = false, onClose}) {
                         </Themes>
                     </Categories>
 
-                    <CreateButton id="btnCreate">Создать задачу</CreateButton>
+                    <CreateButton id="btnCreate" form="formNewCard" type="submit">
+                        Создать задачу
+                    </CreateButton>
                 </Content>
             </Dialog>
         </Overlay>

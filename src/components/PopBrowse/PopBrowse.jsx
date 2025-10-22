@@ -4,6 +4,7 @@ import {
     Wrap, Form, Field, Label, StatusPill, Area,
     Footer, Btn, BtnDanger, BtnPrimary, CalendarCol,
 } from "./PopBrowse.styled";
+import {parseAnyDate} from "../../constants/calendar.js";
 
 export default function PopBrowse({ open, card, onClose, onEdit, onDelete }) {
     if (!open || !card) return null;
@@ -42,7 +43,10 @@ export default function PopBrowse({ open, card, onClose, onEdit, onDelete }) {
                         </Form>
 
                         <CalendarCol>
-                            <Calendar activeDay={9} showHint={false} />
+                            <Calendar
+                                value={parseAnyDate(card.rawDate || card.date)}
+                                showHint={false}
+                            />
                         </CalendarCol>
                     </Wrap>
 
