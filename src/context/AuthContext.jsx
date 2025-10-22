@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useMemo, useState, useCallback } from "react";
 import { authApi } from "../services/auth.js";
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useAuth = () => useContext(AuthCtx);
 const AuthCtx = createContext(null);
 
@@ -22,7 +23,9 @@ export function AuthProvider({ children }) {
                     setToken(saved.token);
                 }
             }
-        } catch {}
+        } catch (err) {
+            console.warn("Ошибка чтения auth из localStorage:", err);
+        }
     }, []);
 
     useEffect(() => {
@@ -32,7 +35,9 @@ export function AuthProvider({ children }) {
             } else {
                 localStorage.removeItem(LS_KEY);
             }
-        } catch {}
+        } catch (err) {
+            console.warn("Ошибка очистки localStorage:", err);
+        }
     }, [user, token]);
 
     const login = useCallback(async (loginStr, password) => {
@@ -67,7 +72,9 @@ export function AuthProvider({ children }) {
 
     const logout = useCallback(() => {
         setUser(null); setToken(null); setError(null);
-        try { localStorage.removeItem(LS_KEY); } catch {}
+        try { localStorage.removeItem(LS_KEY); } catch (err) {
+            console.warn("Ошибка при очистке localStorage:", err);
+        }
     }, []);
 
     const withAuth = useCallback(async (fn) => {

@@ -10,16 +10,15 @@ import {
 
 function buildMonthGrid(viewYear, viewMonth) {
     const first = new Date(viewYear, viewMonth, 1);
-    const firstIdx = first.getDay(); // 0..6 (0 = вс)
+    const firstIdx = first.getDay();
     const shift = STARTS_ON_MONDAY ? (firstIdx === 0 ? 6 : firstIdx - 1) : firstIdx;
     const start = new Date(viewYear, viewMonth, 1 - shift);
 
-    const cells = Array.from({length: 42}, (_, i) => {
+    return Array.from({ length: 42 }, (_, i) => {
         const d = new Date(start);
         d.setDate(start.getDate() + i);
         return d;
     });
-    return cells;
 }
 
 export default function Calendar({

@@ -193,7 +193,7 @@ const baseBtn = `
 `;
 
 export const Btn = styled.button`
-    ${baseBtn}
+    ${baseBtn};
     background: transparent;
     color: ${({ theme }) => theme.colors.brand};
     border: 0.7px solid ${({ theme }) => theme.colors.brand};
@@ -209,7 +209,7 @@ export const BtnDanger = styled(Btn)`
 `;
 
 export const BtnPrimary = styled.button`
-  ${baseBtn}
+  ${baseBtn};
   border: none;
   background: ${({ theme }) => theme.colors.brand};
   color: ${({ theme }) => theme.colors.white};

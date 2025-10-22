@@ -1,12 +1,28 @@
-import { useMemo, useState } from "react";
+import {useMemo, useState} from "react";
 import Calendar from "../Calendar/Calendar.jsx";
 import {
-    Overlay, Box, Content, Top, Ttl, CatBadge,
-    Wrap, Form, Field, Label, StatusPill, Area,
-    Footer, Btn, BtnDanger, BtnPrimary, CalendarCol, StatusList, StatusBtn,
+    Area,
+    Box,
+    Btn,
+    BtnDanger,
+    BtnPrimary,
+    CalendarCol,
+    CatBadge,
+    Content,
+    Field,
+    Footer,
+    Form,
+    Label,
+    Overlay,
+    StatusBtn,
+    StatusList,
+    StatusPill,
+    Top,
+    Ttl,
+    Wrap,
 } from "./PopBrowse.styled";
-import { DEFAULT_STATUSES } from "../../constants/statuses.js";
-import { parseAnyDate } from "../../constants/calendar.js";
+import {DEFAULT_STATUSES} from "../../constants/statuses.js";
+import {parseAnyDate} from "../../constants/calendar.js";
 
 const PICK_COLOR = "#94A6BE";
 
@@ -64,8 +80,6 @@ export default function PopBrowse({ open, card, onClose, onDelete, onUpdate }) {
         setIsEdit(false);
     };
 
-    const statuses = DEFAULT_STATUSES;
-
     return (
         <Overlay open={open} onClick={onClose}>
             <Box onClick={(e) => e.stopPropagation()}>
@@ -101,7 +115,7 @@ export default function PopBrowse({ open, card, onClose, onDelete, onUpdate }) {
                                     <StatusPill>{card.status || "Нужно сделать"}</StatusPill>
                                 ) : (
                                     <StatusList>
-                                        {statuses.map((s) => (
+                                        {DEFAULT_STATUSES.map((s) => (
                                             <StatusBtn
                                                 key={s}
                                                 type="button"

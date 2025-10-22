@@ -101,12 +101,12 @@ const inputBase = css`
 `;
 
 export const Input = styled.input`
-  ${inputBase}
+  ${inputBase};
   margin-top: 14px;
 `;
 
 export const TextArea = styled.textarea`
-  ${inputBase}
+  ${inputBase};
   margin-top: 14px;
   height: 200px;
 

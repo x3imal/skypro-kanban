@@ -50,10 +50,10 @@ export default function PopNewCard({ open = false, onClose, onSubmit }) {
 
     useEffect(() => {
         if (title && errors.title) setErrors((s) => ({ ...s, title: "" }));
-    }, [title]);
+    }, [errors.title, title]);
     useEffect(() => {
         if (description && errors.description) setErrors((s) => ({ ...s, description: "" }));
-    }, [description]);
+    }, [description, errors.description]);
 
     if (!open) return null;
 
