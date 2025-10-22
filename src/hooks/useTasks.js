@@ -13,7 +13,6 @@ export function useTasks(token, navigate) {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    // initial load
     useEffect(() => {
         let cancelled = false;
         (async () => {
@@ -34,6 +33,7 @@ export function useTasks(token, navigate) {
     const create = useCallback(async ({ title, description, topic, due }) => {
         const safeTopic = ALLOWED_TOPICS.includes(topic) ? topic : "Research";
         const onlyDate = toISODateOnly(due);
+
         const body = {
             title: String(title || "").trim(),
             description: String(description || "").trim(),
@@ -52,12 +52,36 @@ export function useTasks(token, navigate) {
             description: body.description || "",
             userId: null,
         };
-        setCards((prev) => [optimistic, ...prev]);
+
+        setCards((prev) => [...prev, optimistic]);
 
         try {
             const data = await kanbanApi.create(body, token);
-            const apiTask = data?.task || data;
-            const created = mapTask(apiTask);
+
+            let apiTask;
+            if (Array.isArray(data?.tasks)) {
+                apiTask =
+                    data.tasks.find(
+                        (t) =>
+                            String(t.title || "") === body.title &&
+                            String(t.topic || "") === safeTopic &&
+                            (onlyDate ? toISODateOnly(t.date) === onlyDate : true)
+                    ) || data.tasks[data.tasks.length - 1];
+            } else {
+                apiTask = data?.task || data || {};
+            }
+
+            if (apiTask && apiTask.id && !apiTask._id) {
+                apiTask = { ...apiTask, _id: apiTask.id };
+            }
+
+            const created = mapTask({
+                title: body.title,
+                description: body.description,
+                topic: safeTopic,
+                date: onlyDate || null,
+                ...apiTask,
+            });
 
             setCards((prev) => prev.map((c) => (c.id === tmpId ? created : c)));
             navigate(`/task/${created.id}`, { replace: true });
@@ -66,6 +90,7 @@ export function useTasks(token, navigate) {
             throw new Error(e?.message || "Не удалось создать задачу");
         }
     }, [navigate, token]);
+
 
     const remove = useCallback(async (id) => {
         if (!id) return;

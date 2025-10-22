@@ -3,7 +3,7 @@ import { formatDate } from "../utils/date";
 
 export function mapTask(apiTask) {
     return {
-        id: apiTask._id,
+        id: apiTask._id || apiTask.id,
         title: apiTask.title || "Название задачи",
         topic: apiTask.topic || "Research",
         status: normalizeStatus(apiTask.status),
