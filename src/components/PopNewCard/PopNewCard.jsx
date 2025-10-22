@@ -1,44 +1,73 @@
+import { useState } from "react";
 import Calendar from "../Calendar/Calendar.jsx";
+import {
+    Overlay, Dialog, Content, Title, Wrap, Form, Subttl,
+    FormBlock, Input, TextArea, Categories, CategoriesTitle,
+    Themes, ThemePill, CreateButton,
+} from "./PopNewCard.styled.js";
 
-export default function PopNewCard() {
+export default function PopNewCard({ open = false, onClose }) {
+    if (!open) return null;
+
+    const close = () => onClose?.();
+
+    const [due, setDue] = useState(null); // Date
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+    };
+
     return (
-        <div className="pop-new-card" id="popNewCard">
-            <div className="pop-new-card__container">
-                <div className="pop-new-card__block">
-                    <div className="pop-new-card__content">
-                        <h3 className="pop-new-card__ttl">Создание задачи</h3>
-                        <a href="#" className="pop-new-card__close">&#10006;</a>
+        <Overlay onClick={close}>
+            <Dialog onClick={(e) => e.stopPropagation()}>
+                <Content>
+                    <Title>Создание задачи</Title>
 
-                        <div className="pop-new-card__wrap">
-                            <form className="pop-new-card__form form-new" id="formNewCard" action="#">
-                                <div className="form-new__block">
-                                    <label htmlFor="formTitle" className="subttl">Название задачи</label>
-                                    <input className="form-new__input" type="text" name="name" id="formTitle"
-                                           placeholder="Введите название задачи..." autoFocus />
-                                </div>
-                                <div className="form-new__block">
-                                    <label htmlFor="textArea" className="subttl">Описание задачи</label>
-                                    <textarea className="form-new__area" name="text" id="textArea"
-                                              placeholder="Введите описание задачи..."></textarea>
-                                </div>
-                            </form>
+                    <Wrap>
+                        <Form id="formNewCard" action="#" onSubmit={handleSubmit}>
+                            <FormBlock>
+                                <Subttl htmlFor="formTitle">Название задачи</Subttl>
+                                <Input
+                                    type="text"
+                                    name="name"
+                                    id="formTitle"
+                                    placeholder="Введите название задачи..."
+                                    autoFocus
+                                />
+                            </FormBlock>
 
-                            <Calendar activeDay={8} showHint />
-                        </div>
+                            <FormBlock>
+                                <Subttl htmlFor="textArea">Описание задачи</Subttl>
+                                <TextArea
+                                    name="text"
+                                    id="textArea"
+                                    placeholder="Введите описание задачи..."
+                                />
+                            </FormBlock>
+                        </Form>
 
-                        <div className="pop-new-card__categories categories">
-                            <p className="categories__p subttl">Категория</p>
-                            <div className="categories__themes">
-                                <div className="categories__theme _orange _active-category"><p className="_orange">Web Design</p></div>
-                                <div className="categories__theme _green"><p className="_green">Research</p></div>
-                                <div className="categories__theme _purple"><p className="_purple">Copywriting</p></div>
-                            </div>
-                        </div>
+                        <Calendar
+                            value={due}
+                            onChange={setDue}
+                            showHint
+                        />
+                    </Wrap>
 
-                        <button className="form-new__create _hover01" id="btnCreate">Создать задачу</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+                    <Categories>
+                        <CategoriesTitle>Категория</CategoriesTitle>
+                        <Themes>
+                            <ThemePill $variant="webdesign" $active>Web Design</ThemePill>
+                            <ThemePill $variant="research">Research</ThemePill>
+                            <ThemePill $variant="copywriting">Copywriting</ThemePill>
+                        </Themes>
+                    </Categories>
+
+                    <CreateButton id="btnCreate" form="formNewCard" type="submit">
+                        Создать задачу
+                    </CreateButton>
+                </Content>
+            </Dialog>
+        </Overlay>
     );
 }

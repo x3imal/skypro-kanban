@@ -1,20 +1,27 @@
-export default function PopUser({ isOpen, onClose }) {
-    return (
-        <div
-            className="header__pop-user-set pop-user-set"
-            style={{ display: isOpen ? "block" : "none" }}
-        >
-            <p className="pop-user-set__name">Ivan Ivanov</p>
-            <p className="pop-user-set__mail">ivan.ivanov@gmail.com</p>
+import { Wrapper, Name, Mail, ThemeRow, ExitBtn } from "./PopUser.styled.js";
 
-            <div className="pop-user-set__theme">
+export default function PopUser({ isOpen, onClose, onAskLogout }) {
+    if (!isOpen) return null;
+
+    return (
+        <Wrapper>
+            <Name>Ivan Ivanov</Name>
+            <Mail>ivan.ivanov@gmail.com</Mail>
+
+            <ThemeRow>
                 <p>Темная тема</p>
                 <input type="checkbox" className="checkbox" name="checkbox" />
-            </div>
+            </ThemeRow>
 
-            <button type="button" onClick={onClose} className="_hover03">
+            <ExitBtn
+                type="button"
+                onClick={() => {
+                    onClose?.();
+                    onAskLogout?.();
+                }}
+            >
                 Выйти
-            </button>
-        </div>
+            </ExitBtn>
+        </Wrapper>
     );
 }

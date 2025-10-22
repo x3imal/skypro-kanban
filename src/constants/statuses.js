@@ -1,4 +1,4 @@
-export const STATUSES = [
+export const DEFAULT_STATUSES = [
     "Без статуса",
     "Нужно сделать",
     "В работе",
