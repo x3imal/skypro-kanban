@@ -46,6 +46,7 @@ export default function PopBrowse({ open, card, onClose, onEdit, onDelete }) {
                             <Calendar
                                 value={parseAnyDate(card.rawDate || card.date)}
                                 showHint={false}
+                                readOnly
                             />
                         </CalendarCol>
                     </Wrap>

@@ -6,6 +6,13 @@ export const Wrap = styled.div`
     width: 182px;
     margin-bottom: 20px;
 
+    ${({ $readOnly }) =>
+            $readOnly &&
+            `
+      pointer-events: none;
+      opacity: 0.9;
+    `}
+
     ${sm} {
         max-width: 340px;
         width: 100%;
@@ -60,17 +67,41 @@ export const NavBtn = styled.button`
     width: 18px;
     height: 25px;
     cursor: pointer;
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-    border: 0;
+    border: none;
     background: transparent;
     padding: 0;
+    line-height: 0;
+    transition: opacity 0.2s ease;
 
     svg {
+        display: block;
+        width: 6px;
+        height: 11px;
+    }
+
+    path {
         fill: ${({ theme }) => theme.colors.muted};
+        transition: opacity 0.2s ease;
+    }
+
+    &:hover {
+        opacity: 0.7;
+    }
+
+    &:active {
+        opacity: 0.6;
+    }
+
+    &:disabled {
+        opacity: 0.4;
+        cursor: default;
     }
 `;
+
+
 
 export const Content = styled.div`
     margin-bottom: 12px;
@@ -113,42 +144,49 @@ export const Cells = styled.div`
 `;
 
 export const Cell = styled.div`
-  width: 22px;
-  height: 22px;
-  margin: 2px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    width: 22px;
+    height: 22px;
+    margin: 2px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    letter-spacing: -0.2px;
+    cursor: pointer;
+    user-select: none;
 
-  font-size: 10px;
-  letter-spacing: -0.2px;
-  cursor: pointer;
+    color: ${({ theme }) => theme.colors.muted};
+    background: transparent;
 
-  color: ${({ theme }) => theme.colors.muted};
-  background: transparent;
-
-  ${({ $otherMonth }) => $otherMonth && `opacity: 0;`}
-  ${({ $current }) => $current && `font-weight: 700;`}
-  ${({ $active, theme }) =>
-    $active &&
-    `
+    ${({ $otherMonth }) => $otherMonth && `opacity: 0;`}
+    ${({ $current }) => $current && `font-weight: 700;`}
+    ${({ $active, theme }) =>
+            $active &&
+            `
       background: ${theme.colors.muted};
       color: ${theme.colors.white};
     `}
-  ${({ $weekend }) => $weekend && ``}
+    ${({ $disabled }) =>
+            $disabled &&
+            `
+      cursor: default;
+      opacity: 0.7;
+      pointer-events: none;
+    `}
 
-  &:hover {
-    color: ${({ theme }) => theme.colors.muted};
-    background-color: ${({ theme }) => theme.colors.bg};
-  }
+    &:hover {
+        color: ${({ theme }) => theme.colors.muted};
+        background-color: ${({ theme }) => theme.colors.bg};
+    }
 
-  ${sm} {
-    width: 42px;
-    height: 42px;
-    font-size: 14px;
-  }
+    ${sm} {
+        width: 42px;
+        height: 42px;
+        font-size: 14px;
+    }
 `;
+
 
 export const Period = styled.div`
   padding: 0 7px;
