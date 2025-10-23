@@ -11,10 +11,12 @@ import {
     PrimaryBtn,
     UserLink,
 } from "./Header.styled";
+import {useAuth} from "../../context/AuthContext.jsx";
 
 export default function Header() {
     const [isUserOpen, setIsUserOpen] = useState(false);
     const navigate = useNavigate();
+    const { user } = useAuth();
 
     const toggleUser = () => setIsUserOpen((p) => !p);
 
@@ -47,7 +49,7 @@ export default function Header() {
                             }}
                             aria-expanded={isUserOpen}
                         >
-                            Ivan Ivanov
+                            {user?.name}
                         </UserLink>
 
                         <PopUser
