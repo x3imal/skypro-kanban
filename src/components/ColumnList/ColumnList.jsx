@@ -6,19 +6,20 @@ export default function ColumnList({ statuses = [], cards = [], onOpenCard }) {
         <>
             {statuses.map((status) => (
                 <Column key={status} title={status}>
-                    {cards.filter(c => c.status === status).map((card) => (
-                        <Card
-                            key={card.id}
-                            id={card.id}
-                            category={card.topic}
-                            title={card.title}
-                            date={card.date}
-                            onOpen={onOpenCard}
-                        />
-                    ))}
+                    {cards
+                        .filter((c) => c.status === status)
+                        .map((card, index) => (
+                            <Card
+                                key={card.id || `${status}-${index}`}
+                                id={card.id}
+                                category={card.topic}
+                                title={card.title}
+                                date={card.date}
+                                onOpen={onOpenCard}
+                            />
+                        ))}
                 </Column>
             ))}
         </>
     );
 }
-

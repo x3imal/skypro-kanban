@@ -127,21 +127,26 @@ export const Area = styled.textarea`
     width: 100%;
     outline: none;
     padding: 14px;
-    background: #EAEEF6;
-    border: 0.7px solid rgba(148,166,190,0.4);
+    background: transparent; /* как в попапе создания */
+    border: 0.7px solid rgba(148, 166, 190, 0.4);
     border-radius: 8px;
     font-size: 14px;
+    line-height: 1;
     letter-spacing: -0.14px;
     height: 200px;
     resize: none;
 
     &::placeholder {
-        color: ${({ theme }) => theme.colors.muted};
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 1px;
+        color: #94A6BE;
+        letter-spacing: -0.14px;
     }
 
     ${xs} {
         max-width: 100%;
-        height: 37px; 
+        height: 37px;
     }
 `;
 
@@ -155,7 +160,6 @@ export const CalendarCol = styled.div`
     }
 `;
 
-export const SectionLabel = styled(Label).attrs({ as: "div" })``;
 
 export const Footer = styled.div`
   display: flex;
@@ -189,7 +193,7 @@ const baseBtn = `
 `;
 
 export const Btn = styled.button`
-    ${baseBtn}
+    ${baseBtn};
     background: transparent;
     color: ${({ theme }) => theme.colors.brand};
     border: 0.7px solid ${({ theme }) => theme.colors.brand};
@@ -205,7 +209,7 @@ export const BtnDanger = styled(Btn)`
 `;
 
 export const BtnPrimary = styled.button`
-  ${baseBtn}
+  ${baseBtn};
   border: none;
   background: ${({ theme }) => theme.colors.brand};
   color: ${({ theme }) => theme.colors.white};
@@ -218,4 +222,41 @@ export const BtnPrimary = styled.button`
     width: 100%;
     height: 40px;
   }
+`;
+
+export const StatusList = styled.div`
+    width: 570px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+
+    ${sm} {
+        width: 100%;
+        height: auto;
+        flex-wrap: wrap;
+        overflow: visible;
+    }
+`;
+
+export const StatusBtn = styled.button`
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 16px;
+    border-radius: 24px;
+    border: 0.7px solid rgba(148, 166, 190, 0.5);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 14px;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background-color .12s ease, color .12s ease, border-color .12s ease;
+
+    background: ${({ $active }) => ($active ? "#94A6BE" : "rgba(255,255,255,0.4)")};
+    color: ${({ $active }) => ($active ? "#ffffff" : "#94A6BE")};
+
+    &:hover { filter: brightness(0.98); }
 `;
