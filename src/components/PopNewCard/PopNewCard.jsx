@@ -7,7 +7,6 @@ import {
 } from "./PopNewCard.styled.js";
 
 export default function PopNewCard({ open = false, onClose, onSubmit }) {
-    // хуки всегда вызываем
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [topic, setTopic] = useState("Web Design");
@@ -39,7 +38,7 @@ export default function PopNewCard({ open = false, onClose, onSubmit }) {
         if (!validate() || submitting) return;
         setSubmitting(true);
         try {
-            await onSubmit?.({ title, description, topic, due }); // ← вызываем MainPage
+            await onSubmit?.({ title, description, topic, due });
             close();
         } catch (err) {
             setApiError(err?.message || "Не удалось создать задачу");
