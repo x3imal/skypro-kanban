@@ -9,7 +9,7 @@ export const Overlay = styled.div`
   display: ${({ open }) => (open ? "flex" : "none")};
   align-items: center;
   justify-content: center;
-  background: rgba(0,0,0,.4);
+  background: ${({ theme }) => theme.colors.overlay || "rgba(0,0,0,.4)"};
   z-index: 1000;
 `;
 
@@ -17,18 +17,15 @@ export const Box = styled.div`
   position: relative;
   width: 630px;
   height: 492px;
-  background: ${({ theme }) => theme.colors.white || "#FFFFFF"};
+  background: ${({ theme }) => theme.colors.white};
   border-radius: 10px;
-  border: 0.7px solid #D4DBE5;
-  box-shadow: 0 10px 39px rgba(26,56,101,0.21);
+  border: 0.7px solid ${({ theme }) => theme.colors.border || "#D4DBE5"};
+  box-shadow: ${({ theme }) => theme.shadow?.card || "0 10px 39px rgba(26,56,101,0.21)"};
   padding: 40px 30px 48px 30px;
   box-sizing: border-box;
   overflow: hidden;
 
-  ${sm} {
-    width: min(630px, 96vw);
-    height: auto;
-  }
+  ${sm} { width: min(630px, 96vw); height: auto; }
 `;
 
 export const Top = styled.div`
@@ -40,7 +37,7 @@ export const Top = styled.div`
 
 export const Ttl = styled.h3`
   margin: 0;
-  color: #000;
+  color: ${({ theme }) => theme.colors.text};
   font-size: 20px;
   font-weight: 600;
   line-height: 24px;
@@ -54,8 +51,8 @@ export const CatBadge = styled.span`
   border-radius: 999px;
   font-size: 14px;
   font-weight: 600;
-  background: ${({ theme }) => theme?.colors?.badge?.webdesign?.bg || "#FFE9B7"};
-  color: ${({ theme }) => theme?.colors?.badge?.webdesign?.fg || "#000"};
+  background: ${({ theme }) => theme.colors.badge.webdesign.bg};
+  color: ${({ theme }) => theme.colors.badge.webdesign.fg};
 `;
 
 export const Content = styled.div`
@@ -81,7 +78,7 @@ export const StatusField = styled(Field)`
 `;
 
 export const Label = styled.label`
-  color: #000;
+  color: ${({ theme }) => theme.colors.text};
   font-size: 14px;
   font-weight: 600;
   line-height: 1;
@@ -100,8 +97,8 @@ export const StatusPill = styled.span`
   height: 30px;
   padding: 8px 20px;
   border-radius: 24px;
-  background: #94A6BE;
-  color: #FFFFFF;
+  background: ${({ theme }) => theme.colors.muted};
+  color: ${({ theme }) => theme.colors.white};
   font-size: 14px;
   font-weight: 600;
   line-height: 14px;
@@ -125,13 +122,13 @@ export const StatusBtn = styled.button.attrs({ type: "button" })`
   height: 30px;
   padding: 10px 14px;
   border-radius: 24px;
-  border: 0.7px solid rgba(148,166,190,0.5);
+  border: 0.7px solid ${({ theme }) => theme.colors.border || "rgba(148,166,190,0.5)"};
   font-size: 14px;
   font-weight: 400;
   line-height: 14px;
   white-space: nowrap;
-  background: ${({ $active }) => ($active ? "#94A6BE" : "rgba(255,255,255,0.4)")};
-  color: ${({ $active }) => ($active ? "#ffffff" : "#94A6BE")};
+  background: ${({ $active, theme }) => ($active ? theme.colors.muted : "rgba(255,255,255,0.04)")};
+  color: ${({ $active, theme }) => ($active ? theme.colors.white : theme.colors.muted)};
 `;
 
 export const DescField = styled(Field)`
@@ -148,16 +145,17 @@ const areaBase = css`
   font-size: 14px;
   line-height: 1.4;
   outline: none;
-  resize: none; 
+  resize: none;
+  color: ${({ theme }) => theme.colors.text};
 `;
 
 export const Area = styled.textarea`
   ${areaBase};
-  background: ${({ $isEdit }) => ($isEdit ? "transparent" : "#EAEEF6")};
-  border: ${({ $isEdit }) => ($isEdit ? "0.7px solid #94A6BE66" : "0.7px solid transparent")};
+  background: ${({ $isEdit, theme }) => ($isEdit ? "transparent" : (theme.colors.surface2 || "#EAEEF6"))};
+  border: ${({ $isEdit, theme }) => ($isEdit ? `0.7px solid ${theme.colors.inputBorder || "#94A6BE66"}` : "0.7px solid transparent")};
 
   &::placeholder {
-    color: #94A6BE;
+    color: ${({ theme }) => theme.colors.placeholder || theme.colors.muted};
     letter-spacing: -0.14px;
   }
 `;
@@ -165,7 +163,7 @@ export const Area = styled.textarea`
 export const CalendarCol = styled.div`
   grid-area: dates;
   width: 182px;
-  align-self: start
+  align-self: start;
 `;
 
 export const DatesLabel = styled(Label)`
@@ -184,29 +182,38 @@ export const Footer = styled.div`
 `;
 
 const btnBase = css`
-    box-sizing: border-box;
-    height: 30px;
-    border-radius: 4px;
-    padding: 0 14px; 
-    display: inline-flex;
-    align-items: center; 
-    justify-content: center;
-    font-size: 14px;
-    font-weight: 500;
-    line-height: 1; 
-    cursor: pointer;
+  box-sizing: border-box;
+  height: 30px;
+  border-radius: 4px;
+  padding: 0 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color .15s ease, color .15s ease, border-color .15s ease;
 `;
 
 export const BtnOutlined = styled.button`
   ${btnBase};
-  border: 0.7px solid #565EEF;
+  border: 0.7px solid ${({ theme }) => theme.colors.brand};
   background: transparent;
-  color: #565EEF;
+  color: ${({ theme }) => theme.colors.brand};
+
+  &:hover {
+    border-color: ${({ theme }) => theme.colors.hoverBrand};
+    color: ${({ theme }) => theme.colors.white};
+    background: ${({ theme }) => theme.colors.hoverBrand};
+  }
 `;
 
 export const BtnPrimary = styled.button`
   ${btnBase};
   border: none;
-  background: #565EEF;
-  color: #FFFFFF;
+  background: ${({ theme }) => theme.colors.brand};
+  color: ${({ theme }) => theme.colors.white};
+
+  &:hover { background: ${({ theme }) => theme.colors.hoverBrand}; }
 `;
