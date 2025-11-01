@@ -1,17 +1,29 @@
-import styled from "styled-components";
+import styled, { useTheme } from "styled-components";
 import { Link } from "react-router-dom";
 
 const Page = styled.div`
-  min-height:100dvh; display:flex; align-items:center; justify-content:center;
-`;
-const Box = styled.div`
-  text-align:center; background:#fff; padding:40px; border-radius:10px; border:0.7px solid #D4DBE5;
-  box-shadow:${({theme}) => theme.shadow.card};
-  h1{ font-size:24px; margin-bottom:10px; }
-  a{ color:${({theme})=>theme.colors.brand}; }
+    min-height: 100dvh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: ${({ theme }) => theme.colors.bg};
 `;
 
-export default function NotFound(){
+const Box = styled.div`
+    text-align: center;
+    background: ${({ theme }) => theme.colors.surface2};
+    padding: 40px;
+    border-radius: 10px;
+    border: 0.7px solid ${({ theme }) => theme.colors.border};
+    box-shadow: ${({ theme }) => theme.shadow.card};
+    h1 { font-size: 24px; margin-bottom: 10px; color: ${({ theme }) => theme.colors.text}; }
+    p  { color: ${({ theme }) => theme.colors.text}; }
+    a  { color: ${({ theme }) => theme.colors.brand}; }
+`;
+
+export default function NotFound() {
+    const t = useTheme();
+    console.log("THEME ON 404:", t?.name, t?.colors?.bg, t?.colors?.surface2);
     return (
         <Page>
             <Box>

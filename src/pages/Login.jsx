@@ -5,39 +5,83 @@ import { useState } from "react";
 
 const Page = styled.div`
     min-height: 100dvh;
-    display: flex; align-items: center; justify-content: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background: ${({ theme }) => theme.colors.bg};
 `;
 
 const Box = styled.form`
-    width: 368px;
-    background: #fff;
-    border: 0.7px solid #D4DBE5;
-    border-radius: 10px;
-    padding: 50px 60px;
-    box-shadow: ${({ theme }) => theme.shadow.card};
-    display: flex; flex-direction: column; gap: 10px;
+  width: 368px;
+  background: ${({ theme }) => theme.colors.surface2};
+  border: 0.7px solid ${({ theme }) => theme.colors.border};
+  border-radius: 10px;
+  padding: 50px 60px;
+  box-shadow: ${({ theme }) => theme.shadow.card};
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 
-    h1{ margin: 0 0 10px; text-align: center; font-size: 24px; font-weight: 700; }
+  h1 {
+    margin: 0 0 10px;
+    text-align: center;
+    font-size: 24px;
+    font-weight: 700;
+    color: ${({ theme }) => theme.colors.text};
+  }
 
-    input{
-        height: 36px; padding: 0 12px; border-radius: 8px;
-        border: 0.7px solid rgba(148,166,190,.4); outline: none; font-size: 14px;
-    }
-    input::placeholder{ color:#94A6BE; }
+  input {
+    height: 36px;
+    padding: 0 12px;
+    border-radius: 8px;
+    border: 0.7px solid ${({ theme }) => theme.colors.inputBorder};
+    background: ${({ theme }) => theme.colors.inputBg};
+    color: ${({ theme }) => theme.colors.text};
+    outline: none;
+    font-size: 14px;
+  }
+  input::placeholder {
+    color: ${({ theme }) => theme.colors.placeholder};
+  }
 
-    button{
-        height: 36px; margin-top: 10px; border: none; border-radius: 4px;
-        background: ${({theme})=>theme.colors.brand}; color:#fff; cursor: pointer;
-    }
-    button:disabled{ opacity:.6; cursor: default; }
-    button:hover{ background: ${({theme})=>theme.colors.hoverBrand}; }
+  button {
+    height: 36px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 4px;
+    background: ${({ theme }) => theme.colors.brand};
+    color: #fff;
+    cursor: pointer;
+  }
+  button:disabled {
+    opacity: 0.6;
+    cursor: default;
+  }
+  button:hover {
+    background: ${({ theme }) => theme.colors.hoverBrand};
+  }
 
-    .muted{ margin-top:10px; text-align:center; color:#94A6BE; font-size:14px; }
-    .muted a{ color:#94A6BE; text-decoration:underline; transition:color .2s; }
-    .muted a:hover{ color:${({theme})=>theme.colors.brand}; }
+  .muted {
+    margin-top: 10px;
+    text-align: center;
+    color: ${({ theme }) => theme.colors.muted};
+    font-size: 14px;
+  }
+  .muted a {
+    color: ${({ theme }) => theme.colors.muted};
+    text-decoration: underline;
+    transition: color 0.2s;
+  }
+  .muted a:hover {
+    color: ${({ theme }) => theme.colors.brand};
+  }
 
-    .error{ color:#E24545; text-align:center; margin-top:4px; font-size:14px; }
+  .error {
+    color: #e24545;
+    text-align: center;
+    margin-top: 4px;
+    font-size: 14px;
+  }
 `;
 
 export default function Login() {
@@ -50,7 +94,7 @@ export default function Login() {
 
     if (isAuth) return <Navigate to={from} replace />;
 
-    async function onSubmit(e){
+    async function onSubmit(e) {
         e.preventDefault();
         await login(loginStr, password);
     }
@@ -64,14 +108,14 @@ export default function Login() {
                     placeholder="Эл. почта"
                     type="text"
                     value={loginStr}
-                    onChange={e=>setLoginStr(e.target.value)}
+                    onChange={(e) => setLoginStr(e.target.value)}
                     autoComplete="username"
                 />
                 <input
                     placeholder="Пароль"
                     type="password"
                     value={password}
-                    onChange={e=>setPassword(e.target.value)}
+                    onChange={(e) => setPassword(e.target.value)}
                     autoComplete="current-password"
                 />
 
