@@ -166,10 +166,6 @@ export const CalendarCol = styled.div`
   align-self: start;
 `;
 
-export const DatesLabel = styled(Label)`
-  margin-bottom: 14px;
-`;
-
 export const Footer = styled.div`
   position: absolute;
   left: 30px;

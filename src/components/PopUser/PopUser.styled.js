@@ -85,9 +85,12 @@ export const ExitBtn = styled.button`
   width: 72px;
   height: 30px;
   background: transparent;
-  color: ${({ theme }) => theme.colors.brand};
+    color: ${({ theme }) =>
+            theme.name === "dark" ? theme.colors.text : theme.colors.brand};
   border-radius: 4px;
-  border: 1px solid ${({ theme }) => theme.colors.brand};
+    border: 1px solid
+    ${({ theme }) =>
+            theme.name === "dark" ? theme.colors.text : theme.colors.brand};
   cursor: pointer;
   transition: background-color .15s ease, color .15s ease, border-color .15s ease;
 

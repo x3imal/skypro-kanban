@@ -44,10 +44,10 @@ export const dark = {
         surface2: "#141923",
 
         badge: {
-            webdesign:  { bg: "#5A4424", fg: "#F3D7AA" },
-            research:   { bg: "#1E3940", fg: "#BEE9F7" },
-            copywriting:{ bg: "#232546", fg: "#C9CCFF" },
-            gray:       { bg: "#1F2430", fg: "#C7D1E0" },
+            webdesign:  { bg: "#FF6D00", fg: "#FFE4C2" },
+            research:   { bg: "#B4FDD1", fg: "#06B16E" },
+            copywriting:{ bg: "#9A48F1", fg: "#E9D4FF" },
+            gray:       { bg: "#94A6BE", fg: "#FFFFFF" },
         },
     },
     spacing: { cardGap: "10px" },
