@@ -57,7 +57,7 @@ export default function MainPage() {
             <Main
                 statuses={DEFAULT_STATUSES}
                 cards={cards}
-                loading={loading}
+                isLoading={loading}
                 error={error}
                 onOpenCard={openCard}
             />
