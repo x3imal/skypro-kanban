@@ -56,4 +56,12 @@ export const dark = {
     breakpoints: { md: "1200px", sm: "660px", xs: "495px", xxs: "375px" },
 };
 
+/**
+ * Светлая и тёмная темы приложения.
+ * Содержат цветовую палитру, размеры, тени и брейкпоинты.
+ *
+ * @namespace themes
+ * @property {object} light - Светлая тема.
+ * @property {object} dark - Тёмная тема.
+ */
 export const themes = { light, dark };

@@ -84,6 +84,13 @@ const Box = styled.form`
   }
 `;
 
+/**
+ * Страница входа пользователя.
+ * Поддерживает ввод логина и пароля, обработку ошибок и редирект после входа.
+ *
+ * @component
+ * @returns {JSX.Element}
+ */
 export default function Login() {
     const { login, isAuth, loading, error } = useAuth();
     const loc = useLocation();

@@ -5,6 +5,16 @@ import { themes } from "../styles/theme.js";
 const LS_KEY = "kanban_theme";
 const ThemeModeCtx = createContext({ mode: "light", isDark: false, toggle: () => {} });
 
+
+/**
+ * Контекст режима темы (светлая/тёмная).
+ * Сохраняет выбор в localStorage и применяет стили через ThemeProvider.
+ *
+ * @component
+ * @param {Object} props
+ * @param {React.ReactNode} props.children
+ * @returns {JSX.Element}
+ */
 export function ThemeModeProvider({ children }) {
     const [mode, setMode] = useState(() => {
         try {
@@ -49,4 +59,8 @@ export function ThemeModeProvider({ children }) {
     );
 }
 
+/**
+ * Хук для доступа к текущему режиму темы.
+ * @returns {{mode: 'light'|'dark', isDark: boolean, toggle: ()=>void}}
+ */
 export const useThemeMode = () => useContext(ThemeModeCtx);

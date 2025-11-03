@@ -6,6 +6,17 @@ import {
     Themes, ThemePill, CreateButton,
 } from "./PopNewCard.styled.js";
 
+/**
+ * Попап создания новой задачи.
+ * Включает поля ввода, валидацию и выбор даты/категории.
+ *
+ * @component
+ * @param {Object} props
+ * @param {boolean} [props.open=false] - Открыт ли попап.
+ * @param {()=>void} props.onClose - Закрыть окно.
+ * @param {(data:Object)=>Promise<void>} props.onSubmit - Отправка данных новой задачи.
+ * @returns {JSX.Element|null}
+ */
 export default function PopNewCard({ open = false, onClose, onSubmit }) {
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");

@@ -21,6 +21,13 @@ const Box = styled.div`
     a  { color: ${({ theme }) => theme.colors.brand}; }
 `;
 
+/**
+ * Страница 404 — отображается при переходе на несуществующий маршрут.
+ * Использует текущую тему для фона и оформления.
+ *
+ * @component
+ * @returns {JSX.Element}
+ */
 export default function NotFound() {
     const t = useTheme();
     console.log("THEME ON 404:", t?.name, t?.colors?.bg, t?.colors?.surface2);

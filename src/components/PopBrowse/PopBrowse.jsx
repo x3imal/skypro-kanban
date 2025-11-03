@@ -24,6 +24,19 @@ import {
     Ttl,
 } from "./PopBrowse.styled.js";
 
+/**
+ * Попап просмотра и редактирования задачи.
+ * Позволяет изменять статус, описание и дату задачи.
+ *
+ * @component
+ * @param {Object} props
+ * @param {boolean} props.open - Открыт ли попап.
+ * @param {Object} props.card - Данные задачи.
+ * @param {()=>void} props.onClose - Закрыть попап.
+ * @param {(id:string|number)=>Promise<void>} [props.onDelete] - Удаление задачи.
+ * @param {(id:string|number, data:Object)=>Promise<void>} [props.onUpdate] - Сохранение изменений.
+ * @returns {JSX.Element|null}
+ */
 export default function PopBrowse({ open, card, onClose, onDelete, onUpdate }) {
     const categoryKey = (card?.topic || card?.category || "webdesign")
         .toString()

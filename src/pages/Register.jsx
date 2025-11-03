@@ -84,6 +84,14 @@ const Box = styled.form`
     }
 `;
 
+
+/**
+ * Страница регистрации нового пользователя.
+ * После успешной регистрации выполняет автоматический вход.
+ *
+ * @component
+ * @returns {JSX.Element}
+ */
 export default function Register() {
     const { register, isAuth, loading, error } = useAuth();
     const loc = useLocation();

@@ -14,6 +14,13 @@ import {
 import {useAuth} from "../../context/AuthContext.jsx";
 import {useThemeMode} from "../../context/ThemeModeContext.jsx";
 
+/**
+ * Верхняя панель приложения.
+ * Содержит логотип, кнопку создания задачи и меню пользователя.
+ *
+ * @component
+ * @returns {JSX.Element}
+ */
 export default function Header() {
     const [isUserOpen, setIsUserOpen] = useState(false);
     const navigate = useNavigate();

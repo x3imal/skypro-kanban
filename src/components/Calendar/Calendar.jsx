@@ -7,20 +7,22 @@ import {
     WEEKDAYS_SHORT, MONTHS_RU, STARTS_ON_MONDAY,
     parseAnyDate, formatRu, toISODate
 } from "../../constants/calendar";
+import {buildMonthGrid} from "../../utils/date.js";
 
-function buildMonthGrid(viewYear, viewMonth) {
-    const first = new Date(viewYear, viewMonth, 1);
-    const firstIdx = first.getDay();
-    const shift = STARTS_ON_MONDAY ? (firstIdx === 0 ? 6 : firstIdx - 1) : firstIdx;
-    const start = new Date(viewYear, viewMonth, 1 - shift);
 
-    return Array.from({ length: 42 }, (_, i) => {
-        const d = new Date(start);
-        d.setDate(start.getDate() + i);
-        return d;
-    });
-}
-
+/**
+ * Компонент календаря для выбора даты (или просмотра в readOnly).
+ * Держит локально «просматриваемый» месяц и выбранную дату.
+ *
+ * @component
+ * @param {Object} props
+ * @param {Date|string|null} [props.value] - Текущее значение даты (Date или ISO/строка).
+ * @param {(d: Date)=>void} [props.onChange] - Колбэк при выборе даты.
+ * @param {boolean} [props.showHint=false] - Показывать подсказку над подписью.
+ * @param {string} [props.title="Даты"] - Заголовок блока.
+ * @param {boolean} [props.readOnly=false] - Режим только для чтения (без навигации/выбора).
+ * @returns {JSX.Element}
+ */
 export default function Calendar({
                                      value,
                                      onChange,

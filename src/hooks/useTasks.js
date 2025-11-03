@@ -8,6 +8,23 @@ import { DEFAULT_STATUSES } from "../constants/statuses.js";
 const FIRST_STATUS = (DEFAULT_STATUSES && DEFAULT_STATUSES[0]) || "Без статуса";
 const ALLOWED_TOPICS = ["Web Design", "Research", "Copywriting"];
 
+
+/**
+ * Хук для управления задачами (CRUD + загрузка).
+ * Работает с API и хранит локальный список карточек.
+ *
+ * @param {string|null} token - Токен авторизации.
+ * @returns {{
+ *   cards: Array<Object>,
+ *   loading: boolean,
+ *   error: string,
+ *   byId: (id:string|number)=>Object|null,
+ *   create: (data:Object)=>Promise<Object>,
+ *   remove: (id:string|number)=>Promise<boolean>,
+ *   update: (id:string|number, patch:Object)=>Promise<Object|null>,
+ *   reload: ()=>Promise<Array<Object>>
+ * }}
+ */
 export function useTasks(token) {
     const [cards, setCards] = useState([]);
     const [loading, setLoading] = useState(false);

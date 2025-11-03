@@ -1,3 +1,8 @@
+/**
+ * Преобразует статус из API или текста в человеко-читаемый формат.
+ * @param {string} s - Исходный статус.
+ * @returns {string} Локализованное название.
+ */
 export function normalizeStatus(s) {
     if (!s) return "Без статуса";
     const v = String(s).trim();
@@ -16,6 +21,11 @@ export function normalizeStatus(s) {
     return map[v] || "Без статуса";
 }
 
+/**
+ * Конвертирует локализованный статус в формат API.
+ * @param {string} s - Статус пользователя или локальный текст.
+ * @returns {string} API-ключ статуса.
+ */
 export function statusToApi(s) {
     const v = String(s || "").trim();
     const map = {

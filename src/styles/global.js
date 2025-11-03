@@ -1,5 +1,11 @@
 import { createGlobalStyle } from "styled-components";
 
+/**
+ * Глобальные стили приложения.
+ * Сбрасывают отступы, задают базовые цвета и анимацию смены темы.
+ *
+ * @type {import("styled-components").GlobalStyleComponent}
+ */
 export const GlobalStyle = createGlobalStyle`
     *, *::before, *::after {
         box-sizing: border-box;
