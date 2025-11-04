@@ -77,19 +77,15 @@ export default function PopBrowse({ open, card, onClose, onDelete, onUpdate }) {
             setIsEdit(false);
             return;
         }
-
         const cleanTitle = title.trim();
         const cleanDesc = text.trim();
 
         const nextErrors = {
-            title: cleanTitle ? "" : true,
-            description: cleanDesc ? "" : true,
+            title: !cleanTitle,
+            description: !cleanDesc,
         };
         setErrors(nextErrors);
-
-        if (nextErrors.title || nextErrors.description) {
-            return;
-        }
+        if (nextErrors.title || nextErrors.description) return;
 
         setSaving(true);
         try {
@@ -99,11 +95,14 @@ export default function PopBrowse({ open, card, onClose, onDelete, onUpdate }) {
                 description: cleanDesc,
                 date,
             });
+
             setIsEdit(false);
+            onClose?.();
         } finally {
             setSaving(false);
         }
     };
+
 
     const onRemove = async () => {
         if (!onDelete) return;

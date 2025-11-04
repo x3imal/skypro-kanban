@@ -110,9 +110,9 @@ export const StatusList = styled.div`
   height: 60px;
   display: flex;
   align-items: center;
-  gap: 14px;
   flex-wrap: nowrap;
   overflow: hidden;
+    justify-content: space-between;
 `;
 
 export const StatusBtn = styled.button.attrs({ type: "button" })`
