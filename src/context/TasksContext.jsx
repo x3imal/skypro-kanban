@@ -25,6 +25,7 @@ export function TaskProvider({ children }) {
  * @throws {Error} если используется вне `<TaskProvider>`.
  * @returns {ReturnType<typeof useTasks>}
  */
+// eslint-disable-next-line react-refresh/only-export-components
 export function useTaskContext() {
     const ctx = useContext(TaskContext);
     if (!ctx) throw new Error("useTaskContext must be used within <TaskProvider>");

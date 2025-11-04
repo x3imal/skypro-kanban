@@ -23,12 +23,12 @@ export function ThemeModeProvider({ children }) {
             if (typeof window !== "undefined" && window.matchMedia?.("(prefers-color-scheme: dark)").matches) {
                 return "dark";
             }
-        } catch {}
+        } catch { /* empty */ }
         return "light";
     });
 
     useEffect(() => {
-        try { localStorage.setItem(LS_KEY, mode); } catch {}
+        try { localStorage.setItem(LS_KEY, mode); } catch { /* empty */ }
     }, [mode]);
 
     useEffect(() => {
@@ -63,4 +63,5 @@ export function ThemeModeProvider({ children }) {
  * Хук для доступа к текущему режиму темы.
  * @returns {{mode: 'light'|'dark', isDark: boolean, toggle: ()=>void}}
  */
+// eslint-disable-next-line react-refresh/only-export-components
 export const useThemeMode = () => useContext(ThemeModeCtx);

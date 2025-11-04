@@ -1,7 +1,6 @@
 import styled, { css } from "styled-components";
 
 const sm = ({ theme }) => `@media (max-width: ${theme?.breakpoints?.sm || "660px"})`;
-const xs = ({ theme }) => `@media (max-width: ${theme?.breakpoints?.xs || "495px"})`;
 
 export const Overlay = styled.div`
   position: fixed;

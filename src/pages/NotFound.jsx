@@ -1,6 +1,7 @@
 import styled, { useTheme } from "styled-components";
 import { Link } from "react-router-dom";
 
+/* eslint-disable unused-imports/no-unused-vars */
 const Page = styled.div`
     min-height: 100dvh;
     display: flex;

@@ -3,6 +3,7 @@ import { useAuth } from "../context/AuthContext.jsx";
 import { useLocation, Link, Navigate } from "react-router-dom";
 import { useState } from "react";
 
+/* eslint-disable unused-imports/no-unused-vars */
 const Page = styled.div`
     min-height: 100dvh;
     display: flex;
@@ -117,7 +118,9 @@ export default function Login() {
         setLocalError("");
         try {
             await login(trimLogin, trimPassword);
-        } catch (err) {}
+        } catch (error) {
+            setLocalError(error?.message || "Не удалось войти");
+        }
     }
 
     return (
