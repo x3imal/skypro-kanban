@@ -207,7 +207,7 @@ export const BtnOutlined = styled.button`
 
 export const BtnPrimary = styled.button`
   ${btnBase};
-  border: none;
+   border: none;
   background: ${({ theme }) => theme.colors.brand};
   color: ${({ theme }) => theme.colors.white};
 

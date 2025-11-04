@@ -164,19 +164,46 @@ export function useTasks(token) {
             if (idx === -1) return null;
 
             const body = {};
-            if (patch.status != null) body.status = statusToApi(patch.status);
-            if (patch.description != null) body.description = String(patch.description || "").trim();
+
+            if (patch.title != null) {
+                body.title = String(patch.title || "").trim();
+            }
+
+            if (patch.status != null) {
+                body.status = statusToApi(patch.status);
+            }
+
+            if (patch.description != null) {
+                body.description = String(patch.description || "").trim();
+            }
+
             if (patch.date !== undefined) {
                 const onlyDate = toISODateOnly(patch.date);
-                body.date = onlyDate || null;
+                if (onlyDate) {
+                    body.date = onlyDate;
+                } else if (patch.date === null) {
+                    body.date = null;
+                }
             }
 
             const updatedLocal = {
                 ...prev[idx],
+                ...(patch.title != null ? { title: String(patch.title || "").trim() } : {}),
                 ...(patch.status != null ? { status: normalizeStatus(patch.status) } : {}),
-                ...(patch.description != null ? { description: body.description } : {}),
+                ...(patch.description != null ? { description: String(patch.description || "").trim() } : {}),
                 ...(patch.date !== undefined
-                    ? { rawDate: body.date, date: body.date ? formatDate(body.date) : "" }
+                    ? {
+                        rawDate:
+                            patch.date === null
+                                ? null
+                                : toISODateOnly(patch.date) || prev[idx].rawDate || null,
+                        date:
+                            patch.date === null
+                                ? ""
+                                : toISODateOnly(patch.date)
+                                    ? formatDate(toISODateOnly(patch.date))
+                                    : prev[idx].date,
+                    }
                     : {}),
             };
 
@@ -190,17 +217,17 @@ export function useTasks(token) {
             try {
                 const data = await kanbanApi.update(id, body, token);
                 const apiTask = data?.task || data || {};
+
                 const merged = {
                     ...updatedLocal,
                     status: apiTask.status ? normalizeStatus(apiTask.status) : updatedLocal.status,
-                    rawDate: Object.prototype.hasOwnProperty.call(apiTask, "date")
-                        ? apiTask.date
-                        : updatedLocal.rawDate,
-                    date: Object.prototype.hasOwnProperty.call(apiTask, "date")
-                        ? apiTask.date
-                            ? formatDate(apiTask.date)
-                            : ""
-                        : updatedLocal.date,
+                    ...(Object.prototype.hasOwnProperty.call(apiTask, "date")
+                        ? {
+                            rawDate: apiTask.date,
+                            date: apiTask.date ? formatDate(apiTask.date) : "",
+                        }
+                        : {}),
+                    title: apiTask.title ?? updatedLocal.title,
                     description: apiTask.description ?? updatedLocal.description,
                 };
 
@@ -213,6 +240,7 @@ export function useTasks(token) {
         },
         [token]
     );
+
 
     const byId = useCallback((id) => cardsRef.current.find((c) => c.id === id) || null, []);
 

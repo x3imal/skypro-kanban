@@ -1,7 +1,6 @@
 import { useMemo, useState } from "react";
 import Calendar from "../Calendar/Calendar.jsx";
 import { DEFAULT_STATUSES } from "../../constants/statuses.js";
-
 import {
     Area,
     Box,
@@ -45,38 +44,61 @@ export default function PopBrowse({ open, card, onClose, onDelete, onUpdate }) {
 
     const [isEdit, setIsEdit] = useState(false);
     const [saving, setSaving] = useState(false);
+    const [errors, setErrors] = useState({ title: "", description: "" });
 
     const initial = useMemo(
         () => ({
+            title: card?.title || "Название задачи",
             status: card?.status || "Без статуса",
             description: card?.description || "",
-            date: card?.date || null,
+            date: card?.rawDate || card?.date || null,
         }),
-        [card?.status, card?.description, card?.date]
+        [card]
     );
 
+    const [title, setTitle] = useState(initial.title);
     const [status, setStatus] = useState(initial.status);
     const [text, setText] = useState(initial.description);
     const [date, setDate] = useState(initial.date);
 
     const onEdit = () => setIsEdit(true);
+
     const onCancel = () => {
         setIsEdit(false);
+        setErrors({ title: "", description: "" });
+        setTitle(initial.title);
         setStatus(initial.status);
         setText(initial.description);
         setDate(initial.date);
     };
 
     const onSave = async () => {
-        if (!onUpdate) { setIsEdit(false); return; }
+        if (!onUpdate) {
+            setIsEdit(false);
+            return;
+        }
+
+        const cleanTitle = title.trim();
+        const cleanDesc = text.trim();
+
+        const nextErrors = {
+            title: cleanTitle ? "" : true,
+            description: cleanDesc ? "" : true,
+        };
+        setErrors(nextErrors);
+
+        if (nextErrors.title || nextErrors.description) {
+            return;
+        }
+
         setSaving(true);
         try {
             await onUpdate(card.id, {
+                title: cleanTitle,
                 status,
-                description: text.trim(),
+                description: cleanDesc,
                 date,
             });
-
             setIsEdit(false);
         } finally {
             setSaving(false);
@@ -92,7 +114,22 @@ export default function PopBrowse({ open, card, onClose, onDelete, onUpdate }) {
         <Overlay open={open}>
             <Box>
                 <Top>
-                    <Ttl>{card?.title || "Название задачи"}</Ttl>
+                    {!isEdit ? (
+                        <Ttl>{title}</Ttl>
+                    ) : (
+                        <Area
+                            as="input"
+                            value={title}
+                            onChange={(e) => setTitle(e.target.value)}
+                            placeholder="Введите название задачи"
+                            $isEdit
+                            style={{
+                                height: "36px",
+                                resize: "none",
+                                borderColor: errors.title ? "#F85149" : undefined,
+                            }}
+                        />
+                    )}
                     <CatBadge $key={categoryKey}>{card?.topic || card?.category || "—"}</CatBadge>
                 </Top>
 
@@ -110,6 +147,7 @@ export default function PopBrowse({ open, card, onClose, onDelete, onUpdate }) {
                                                 key={s}
                                                 $active={s === status}
                                                 onClick={() => setStatus(s)}
+                                                type="button"
                                             >
                                                 {s}
                                             </StatusBtn>
@@ -127,7 +165,13 @@ export default function PopBrowse({ open, card, onClose, onDelete, onUpdate }) {
                                 placeholder="Введите описание задачи..."
                                 $isEdit={isEdit}
                                 disabled={!isEdit}
+                                style={errors.description ? { borderColor: "#F85149" } : undefined}
                             />
+                            {errors.description && (
+                                <div style={{ marginTop: 4, fontSize: 12, color: "#F85149" }}>
+                                    {errors.description}
+                                </div>
+                            )}
                         </DescField>
 
                         <CalendarCol>
@@ -145,8 +189,12 @@ export default function PopBrowse({ open, card, onClose, onDelete, onUpdate }) {
                             </>
                         ) : (
                             <>
-                                <BtnPrimary onClick={onSave} disabled={saving}>Сохранить</BtnPrimary>
-                                <BtnOutlined onClick={onCancel} disabled={saving}>Отменить</BtnOutlined>
+                                <BtnPrimary onClick={onSave} disabled={saving}>
+                                    Сохранить
+                                </BtnPrimary>
+                                <BtnOutlined onClick={onCancel} disabled={saving}>
+                                    Отменить
+                                </BtnOutlined>
                                 <BtnOutlined onClick={onRemove}>Удалить задачу</BtnOutlined>
                             </>
                         )}
