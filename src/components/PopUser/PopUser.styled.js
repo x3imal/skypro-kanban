@@ -24,13 +24,15 @@ export const Name = styled.p`
     margin-bottom: 4px;
 `;
 
-export const Mail = styled.p`
-    color: ${({ theme }) => theme.colors.muted};
+export const LoginStyled = styled.p`
+    color: #94A6BE;
     font-size: 14px;
+    font-weight: 500;
     line-height: 21px;
     letter-spacing: -0.14px;
-    margin-bottom: 10px;
+    margin-bottom: 4px;
 `;
+
 
 export const ThemeRow = styled.div`
   display: flex;

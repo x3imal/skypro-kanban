@@ -94,7 +94,8 @@ const Box = styled.form`
 export default function Login() {
     const { login, isAuth, loading, error } = useAuth();
     const loc = useLocation();
-    const from = loc.state?.from?.pathname || "/";
+    const rawFrom = loc.state?.from?.pathname;
+    const from = rawFrom === "/exit" ? "/" : rawFrom || "/";
 
     const [loginStr, setLoginStr] = useState("");
     const [password, setPassword] = useState("");

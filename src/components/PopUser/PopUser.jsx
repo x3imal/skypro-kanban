@@ -1,6 +1,7 @@
-import { Wrapper, Name, Mail, ThemeRow, ExitBtn } from "./PopUser.styled.js";
-import { useAuth } from "../../context/AuthContext.jsx";
-import { useThemeMode } from "../../context/ThemeModeContext.jsx";
+import {Wrapper, Name, ThemeRow, ExitBtn, LoginStyled} from "./PopUser.styled.js";
+import {useAuth} from "../../context/AuthContext.jsx";
+import {useThemeMode} from "../../context/ThemeModeContext.jsx";
+import {useEffect, useRef} from "react";
 
 /**
  * Попап пользователя.
@@ -13,16 +14,32 @@ import { useThemeMode } from "../../context/ThemeModeContext.jsx";
  * @param {()=>void} props.onAskLogout - Запрос на выход из аккаунта.
  * @returns {JSX.Element|null}
  */
-export default function PopUser({ isOpen, onClose, onAskLogout }) {
-    const { user } = useAuth();
-    const { isDark, toggle } = useThemeMode();
+export default function PopUser({isOpen, onClose, onAskLogout}) {
+    const {user} = useAuth();
+    const {isDark, toggle} = useThemeMode();
+    const ref = useRef(null);
+
+    useEffect(() => {
+        if (!isOpen) return;
+
+        const handleClickOutside = (e) => {
+            if (ref.current && !ref.current.contains(e.target)) {
+                onClose?.();
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [isOpen, onClose]);
 
     if (!isOpen) return null;
 
     return (
-        <Wrapper>
+        <Wrapper ref={ref}>
             <Name>{user?.name || "Имя пользователя"}</Name>
-            <Mail>ivan.ivanov@gmail.com</Mail>
+            <LoginStyled>{user?.login || "Логин "}</LoginStyled>
 
             <ThemeRow>
                 <p>Тёмная тема</p>
