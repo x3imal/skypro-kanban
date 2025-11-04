@@ -105,7 +105,19 @@ export default function Register() {
 
     async function onSubmit(e) {
         e.preventDefault();
-        await register({ login: loginStr, name, password });
+
+        const trimName = name.trim();
+        const trimLogin = loginStr.trim();
+        const trimPassword = password.trim();
+
+        if (!trimName || !trimLogin || !trimPassword) return;
+
+        await register({
+            login: trimLogin,
+            name: trimName,
+            password: trimPassword,
+        });
+
     }
 
     return (

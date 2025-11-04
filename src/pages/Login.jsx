@@ -98,12 +98,25 @@ export default function Login() {
 
     const [loginStr, setLoginStr] = useState("");
     const [password, setPassword] = useState("");
+    const [localError, setLocalError] = useState("");
 
     if (isAuth) return <Navigate to={from} replace />;
 
     async function onSubmit(e) {
         e.preventDefault();
-        await login(loginStr, password);
+
+        const trimLogin = loginStr.trim();
+        const trimPassword = password.trim();
+
+        if (!trimLogin || !trimPassword) {
+            setLocalError("Введите логин и пароль");
+            return;
+        }
+
+        setLocalError("");
+        try {
+            await login(trimLogin, trimPassword);
+        } catch (err) {}
     }
 
     return (
@@ -130,7 +143,10 @@ export default function Login() {
                     {loading ? "Входим..." : "Войти"}
                 </button>
 
-                {error && <div className="error">{error}</div>}
+                {(error || localError) && (
+                    <div className="error">{localError || error}</div>
+                )}
+
 
                 <p className="muted">
                     Нужно зарегистрироваться? <Link to="/register">Регистрируйтесь здесь</Link>

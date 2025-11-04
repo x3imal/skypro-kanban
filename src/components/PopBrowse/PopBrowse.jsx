@@ -71,7 +71,12 @@ export default function PopBrowse({ open, card, onClose, onDelete, onUpdate }) {
         if (!onUpdate) { setIsEdit(false); return; }
         setSaving(true);
         try {
-            await onUpdate(card.id, { status, description: text, date });
+            await onUpdate(card.id, {
+                status,
+                description: text.trim(),
+                date,
+            });
+
             setIsEdit(false);
         } finally {
             setSaving(false);
