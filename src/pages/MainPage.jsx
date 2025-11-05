@@ -11,6 +11,13 @@ import { useAuth } from "../context/AuthContext.jsx";
 import { DEFAULT_STATUSES } from "../constants/statuses.js";
 import { useTaskContext } from "../context/TasksContext.jsx";
 
+/**
+ * Главная страница приложения (доска задач).
+ * Управляет состояниями попапов, CRUD-задачами и выходом из аккаунта.
+ *
+ * @component
+ * @returns {JSX.Element}
+ */
 export default function MainPage() {
     const { logout } = useAuth();
     const { cards, loading, error, byId, create, remove, update } = useTaskContext();
@@ -50,7 +57,7 @@ export default function MainPage() {
             <Main
                 statuses={DEFAULT_STATUSES}
                 cards={cards}
-                loading={loading}
+                isLoading={loading}
                 error={error}
                 onOpenCard={openCard}
             />

@@ -6,6 +6,17 @@ import {
     Themes, ThemePill, CreateButton,
 } from "./PopNewCard.styled.js";
 
+/**
+ * Попап создания новой задачи.
+ * Включает поля ввода, валидацию и выбор даты/категории.
+ *
+ * @component
+ * @param {Object} props
+ * @param {boolean} [props.open=false] - Открыт ли попап.
+ * @param {()=>void} props.onClose - Закрыть окно.
+ * @param {(data:Object)=>Promise<void>} props.onSubmit - Отправка данных новой задачи.
+ * @returns {JSX.Element|null}
+ */
 export default function PopNewCard({ open = false, onClose, onSubmit }) {
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
@@ -22,23 +33,39 @@ export default function PopNewCard({ open = false, onClose, onSubmit }) {
     const close = () => onClose?.();
 
     const validate = () => {
+        const cleanTitle = title.trim();
+        const cleanDescription = description.trim();
+
         const next = {
-            title: title.trim() ? "" : "Укажите название",
-            description: description.trim() ? "" : "Добавьте описание",
+            title: cleanTitle ? "" : "Укажите название",
+            description: cleanDescription ? "" : "Добавьте описание",
         };
+
         setErrors(next);
-        if (next.title) titleRef.current?.focus();
-        else if (next.description) descRef.current?.focus();
+
+        if (next.title) {
+            titleRef.current?.focus();
+        } else if (next.description) {
+            descRef.current?.focus();
+        }
+
         return !next.title && !next.description;
     };
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setApiError("");
-        if (!validate() || submitting) return;
+
+        if (submitting) return;
+        if (!validate()) return;
+
+        const safeTitle = title.trim();
+        const safeDescription = description.trim();
+
         setSubmitting(true);
         try {
-            await onSubmit?.({ title, description, topic, due });
+            await onSubmit?.({ title: safeTitle, description: safeDescription, topic, due });
             close();
         } catch (err) {
             setApiError(err?.message || "Не удалось создать задачу");
@@ -47,12 +74,20 @@ export default function PopNewCard({ open = false, onClose, onSubmit }) {
         }
     };
 
+
+
     useEffect(() => {
-        if (title && errors.title) setErrors((s) => ({ ...s, title: "" }));
-    }, [errors.title, title]);
+        if (title.trim() && errors.title) {
+            setErrors((s) => ({ ...s, title: "" }));
+        }
+    }, [title, errors.title]);
+
     useEffect(() => {
-        if (description && errors.description) setErrors((s) => ({ ...s, description: "" }));
+        if (description.trim() && errors.description) {
+            setErrors((s) => ({ ...s, description: "" }));
+        }
     }, [description, errors.description]);
+
 
     if (!open) return null;
 

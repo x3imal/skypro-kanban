@@ -1,262 +1,214 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 const sm = ({ theme }) => `@media (max-width: ${theme?.breakpoints?.sm || "660px"})`;
-const xs = ({ theme }) => `@media (max-width: ${theme?.breakpoints?.xs || "495px"})`;
 
 export const Overlay = styled.div`
-    position: fixed;
-    inset: 0;
-    display: ${({ open }) => (open ? "flex" : "none")};
-    align-items: center;
-    justify-content: center;
-    background: rgba(0,0,0,0.4);
-    z-index: 1000;
+  position: fixed;
+  inset: 0;
+  display: ${({ open }) => (open ? "flex" : "none")};
+  align-items: center;
+  justify-content: center;
+  background: ${({ theme }) => theme.colors.overlay || "rgba(0,0,0,.4)"};
+  z-index: 1000;
 `;
 
 export const Box = styled.div`
-    position: relative;
-    background: ${({ theme }) => theme.colors.white};
-    max-width: 630px;
-    width: min(630px, 92vw);
-    padding: 40px 30px 38px;
-    border-radius: 10px;
-    border: 0.7px solid #D4DBE5;
-    box-shadow: 0 10px 39px rgba(26,56,101,0.21);
+  position: relative;
+  width: 630px;
+  height: 492px;
+  background: ${({ theme }) => theme.colors.white};
+  border-radius: 10px;
+  border: 0.7px solid ${({ theme }) => theme.colors.border || "#D4DBE5"};
+  box-shadow: ${({ theme }) => theme.shadow?.card || "0 10px 39px rgba(26,56,101,0.21)"};
+  padding: 40px 30px 48px 30px;
+  box-sizing: border-box;
+  overflow: hidden;
 
-    ${sm} {
-        border-radius: 0;
-        padding: 28px 20px 30px;
-    }
-`;
-
-export const Content = styled.div`
-    display: block;
-    text-align: left;
+  ${sm} { width: min(630px, 96vw); height: auto; }
 `;
 
 export const Top = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    margin-bottom: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
 `;
 
 export const Ttl = styled.h3`
-    margin: 0;
-    color: ${({ theme }) => theme.colors.text};
-    font-size: 28px;  
-    font-weight: 700;
-    line-height: 34px;
+  margin: 0;
+  color: ${({ theme }) => theme.colors.text};
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 24px;
 `;
 
-export const CatBadge = styled.div`
-    display: inline-flex;
-    align-items: center;
-    height: 30px;
-    padding: 8px 20px;
-    border-radius: 24px;
-    background: ${({ theme, $category = "gray" }) =>
-            theme.colors.badge?.[$category]?.bg || theme.colors.badge.gray.bg};
-
-    p {
-        font-size: 14px;
-        font-weight: 600;
-        line-height: 14px;
-        color: ${({ theme, $category = "gray" }) =>
-                theme.colors.badge?.[$category]?.fg || theme.colors.badge.gray.fg};
-        white-space: nowrap;
-    }
+export const CatBadge = styled.span`
+  display: inline-flex;
+  align-items: center;
+  height: 30px;
+  padding: 0 14px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 600;
+  background: ${({ theme }) => theme.colors.badge.webdesign.bg};
+  color: ${({ theme }) => theme.colors.badge.webdesign.fg};
 `;
 
-export const Wrap = styled.div`
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 24px;
-
-    ${sm} {
-        display: block;
-    }
+export const Content = styled.div`
+  display: grid;
+  grid-template-columns: 370px 182px;
+  grid-template-areas:
+    "status status"
+    "desc   dates";
+  column-gap: 18px;
 `;
 
 export const Form = styled.form`
-    max-width: 370px;
-    width: 100%;
-    display: block;
-    margin-bottom: 20px;
-
-    ${sm} {
-        max-width: 100%;
-    }
+  display: contents;
 `;
 
 export const Field = styled.div`
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
+`;
 
-    & + & {
-        margin-top: 20px;
-    }
+export const StatusField = styled(Field)`
+  grid-area: status;
 `;
 
 export const Label = styled.label`
-    color: ${({ theme }) => theme.colors.text};
-    font-size: 14px;
-    font-weight: 600;
-    line-height: 1;
-    margin-bottom: 14px;
+  color: ${({ theme }) => theme.colors.text};
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1;
+`;
+
+export const StatusRow = styled.div`
+  width: 570px;
+  height: 60px;
+  display: flex;
+  align-items: center;
 `;
 
 export const StatusPill = styled.span`
-    display: inline-block;
-    height: 30px;
-    padding: 8px 20px;
-    border-radius: 24px;
-    background: #94A6BE;
-    color: #FFFFFF;
-    font-size: 14px;
-    font-weight: 600;
-    line-height: 14px;
-    white-space: nowrap;
-    width: max-content;
+  display: inline-flex;
+  align-items: center;
+  height: 30px;
+  padding: 8px 20px;
+  border-radius: 24px;
+  background: ${({ theme }) => theme.colors.muted};
+  color: ${({ theme }) => theme.colors.white};
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 14px;
+  white-space: nowrap;
+`;
+
+export const StatusList = styled.div`
+  width: 570px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  overflow: hidden;
+    justify-content: space-between;
+`;
+
+export const StatusBtn = styled.button.attrs({ type: "button" })`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 30px;
+  padding: 10px 14px;
+  border-radius: 24px;
+  border: 0.7px solid ${({ theme }) => theme.colors.border || "rgba(148,166,190,0.5)"};
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 14px;
+  white-space: nowrap;
+  background: ${({ $active, theme }) => ($active ? theme.colors.muted : "rgba(255,255,255,0.04)")};
+  color: ${({ $active, theme }) => ($active ? theme.colors.white : theme.colors.muted)};
+`;
+
+export const DescField = styled(Field)`
+  grid-area: desc;
+  gap: 21px;
+`;
+
+const areaBase = css`
+  width: 370px;
+  height: 200px;
+  border-radius: 8px;
+  padding: 14px;
+  box-sizing: border-box;
+  font-size: 14px;
+  line-height: 1.4;
+  outline: none;
+  resize: none;
+  color: ${({ theme }) => theme.colors.text};
 `;
 
 export const Area = styled.textarea`
-    max-width: 370px;
-    width: 100%;
-    outline: none;
-    padding: 14px;
-    background: transparent; /* как в попапе создания */
-    border: 0.7px solid rgba(148, 166, 190, 0.4);
-    border-radius: 8px;
-    font-size: 14px;
-    line-height: 1;
+  ${areaBase};
+  background: ${({ $isEdit, theme }) => ($isEdit ? "transparent" : (theme.colors.surface2 || "#EAEEF6"))};
+  border: ${({ $isEdit, theme }) => ($isEdit ? `0.7px solid ${theme.colors.inputBorder || "#94A6BE66"}` : "0.7px solid transparent")};
+
+  &::placeholder {
+    color: ${({ theme }) => theme.colors.placeholder || theme.colors.muted};
     letter-spacing: -0.14px;
-    height: 200px;
-    resize: none;
-
-    &::placeholder {
-        font-weight: 400;
-        font-size: 14px;
-        line-height: 1px;
-        color: #94A6BE;
-        letter-spacing: -0.14px;
-    }
-
-    ${xs} {
-        max-width: 100%;
-        height: 37px;
-    }
+  }
 `;
 
 export const CalendarCol = styled.div`
-    width: 182px;
-    margin-top: 74px;
-
-    ${sm} {
-        width: 100%;
-        margin-top: 10px;
-    }
+  grid-area: dates;
+  width: 182px;
+  align-self: start;
 `;
-
 
 export const Footer = styled.div`
+  position: absolute;
+  left: 30px;
+  right: 30px;
+  bottom: 48px;
+  height: 30px;
   display: flex;
-  flex-wrap: wrap;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
-  margin-top: 22px;
-  gap: 10px;
-
-  .btn-group {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-  }
-
-  ${sm} {
-    flex-direction: column;
-    align-items: stretch;
-
-    .btn-group { order: 2; }
-  }
 `;
 
-const baseBtn = `
+const btnBase = css`
+  box-sizing: border-box;
   height: 30px;
-  padding: 0 14px;
   border-radius: 4px;
+  padding: 0 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
   font-weight: 500;
+  line-height: 1;
   cursor: pointer;
   transition: background-color .15s ease, color .15s ease, border-color .15s ease;
 `;
 
-export const Btn = styled.button`
-    ${baseBtn};
-    background: transparent;
-    color: ${({ theme }) => theme.colors.brand};
-    border: 0.7px solid ${({ theme }) => theme.colors.brand};
+export const BtnOutlined = styled.button`
+  ${btnBase};
+  border: 0.7px solid ${({ theme }) => theme.colors.brand};
+  background: transparent;
+  color: ${({ theme }) => theme.colors.brand};
 
-    &:hover {
-        background: ${({ theme }) => theme.colors.hoverBrand};
-        color: ${({ theme }) => theme.colors.white};
-        border-color: ${({ theme }) => theme.colors.hoverBrand};
-    }
-`;
-
-export const BtnDanger = styled(Btn)`
+  &:hover {
+    border-color: ${({ theme }) => theme.colors.hoverBrand};
+    color: ${({ theme }) => theme.colors.white};
+    background: ${({ theme }) => theme.colors.hoverBrand};
+  }
 `;
 
 export const BtnPrimary = styled.button`
-  ${baseBtn};
-  border: none;
+  ${btnBase};
+   border: none;
   background: ${({ theme }) => theme.colors.brand};
   color: ${({ theme }) => theme.colors.white};
 
-  &:hover {
-    background: ${({ theme }) => theme.colors.hoverBrand};
-  }
-
-  ${sm} {
-    width: 100%;
-    height: 40px;
-  }
-`;
-
-export const StatusList = styled.div`
-    width: 570px;
-    height: 60px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-
-    ${sm} {
-        width: 100%;
-        height: auto;
-        flex-wrap: wrap;
-        overflow: visible;
-    }
-`;
-
-export const StatusBtn = styled.button`
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 8px 16px;
-    border-radius: 24px;
-    border: 0.7px solid rgba(148, 166, 190, 0.5);
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 14px;
-    white-space: nowrap;
-    cursor: pointer;
-    transition: background-color .12s ease, color .12s ease, border-color .12s ease;
-
-    background: ${({ $active }) => ($active ? "#94A6BE" : "rgba(255,255,255,0.4)")};
-    color: ${({ $active }) => ($active ? "#ffffff" : "#94A6BE")};
-
-    &:hover { filter: brightness(0.98); }
+  &:hover { background: ${({ theme }) => theme.colors.hoverBrand}; }
 `;

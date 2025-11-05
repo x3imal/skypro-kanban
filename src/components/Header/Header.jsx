@@ -12,11 +12,20 @@ import {
     UserLink,
 } from "./Header.styled";
 import {useAuth} from "../../context/AuthContext.jsx";
+import {useThemeMode} from "../../context/ThemeModeContext.jsx";
 
+/**
+ * Верхняя панель приложения.
+ * Содержит логотип, кнопку создания задачи и меню пользователя.
+ *
+ * @component
+ * @returns {JSX.Element}
+ */
 export default function Header() {
     const [isUserOpen, setIsUserOpen] = useState(false);
     const navigate = useNavigate();
     const { user } = useAuth();
+    const { isDark } = useThemeMode();
 
     const toggleUser = () => setIsUserOpen((p) => !p);
 
@@ -26,7 +35,7 @@ export default function Header() {
                 <HeaderBar>
                     <Logo className="_show _light">
                         <Link to="/">
-                            <img src="/logo.png" alt="logo" />
+                            <img src={isDark ? "/logo_dark.png" : "/logo.png"} alt="logo" />
                         </Link>
                     </Logo>
 

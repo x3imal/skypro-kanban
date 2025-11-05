@@ -120,7 +120,7 @@ export const Days = styled.div`
 `;
 
 export const Day = styled.div`
-    color: ${({ theme }) => theme.colors.muted};
+    color: ${({ theme }) => theme.colors.text};
     font-size: 10px;
     font-weight: 500;
     letter-spacing: -0.2px;
@@ -156,7 +156,7 @@ export const Cell = styled.div`
     cursor: pointer;
     user-select: none;
 
-    color: ${({ theme }) => theme.colors.muted};
+    color: ${({ theme }) => theme.colors.text};
     background: transparent;
 
     ${({ $otherMonth }) => $otherMonth && `opacity: 0;`}
@@ -164,7 +164,7 @@ export const Cell = styled.div`
     ${({ $active, theme }) =>
             $active &&
             `
-      background: ${theme.colors.muted};
+      background: ${theme.colors.brand};
       color: ${theme.colors.white};
     `}
     ${({ $disabled }) =>
@@ -196,7 +196,7 @@ export const Period = styled.div`
   }
 
   p {
-    color: ${({ theme }) => theme.colors.muted};
+    color: ${({ theme }) => theme.colors.text};
     font-size: 10px;
     line-height: 1;
 

@@ -3,57 +3,122 @@ import { useAuth } from "../context/AuthContext.jsx";
 import { useLocation, Link, Navigate } from "react-router-dom";
 import { useState } from "react";
 
+/* eslint-disable unused-imports/no-unused-vars */
 const Page = styled.div`
     min-height: 100dvh;
-    display: flex; align-items: center; justify-content: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background: ${({ theme }) => theme.colors.bg};
 `;
 
 const Box = styled.form`
     width: 368px;
-    background: #fff;
-    border: 0.7px solid #D4DBE5;
+    background: ${({ theme }) => theme.colors.surface2};
+    border: 0.7px solid ${({ theme }) => theme.colors.border};
     border-radius: 10px;
     padding: 50px 60px;
     box-shadow: ${({ theme }) => theme.shadow.card};
-    display: flex; flex-direction: column; gap: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 
-    h1{ margin: 0 0 10px; text-align: center; font-size: 24px; font-weight: 700; }
-
-    input{
-        height: 36px; padding: 0 12px; border-radius: 8px;
-        border: 0.7px solid rgba(148,166,190,.4); outline: none; font-size: 14px;
+    h1 {
+        margin: 0 0 10px;
+        text-align: center;
+        font-size: 24px;
+        font-weight: 700;
+        color: ${({ theme }) => theme.colors.text};
     }
-    input::placeholder{ color:#94A6BE; }
 
-    button{
-        height: 36px; margin-top: 10px; border: none; border-radius: 4px;
-        background: ${({theme})=>theme.colors.brand}; color:#fff; cursor: pointer;
+    input {
+        height: 36px;
+        padding: 0 12px;
+        border-radius: 8px;
+        border: 0.7px solid ${({ theme }) => theme.colors.inputBorder};
+        background: ${({ theme }) => theme.colors.inputBg};
+        color: ${({ theme }) => theme.colors.text};
+        outline: none;
+        font-size: 14px;
     }
-    button:disabled{ opacity:.6; cursor: default; }
-    button:hover{ background: ${({theme})=>theme.colors.hoverBrand}; }
+    input::placeholder {
+        color: ${({ theme }) => theme.colors.placeholder};
+    }
 
-    .muted{ margin-top:10px; text-align:center; color:#94A6BE; font-size:14px; }
-    .muted a{ color:#94A6BE; text-decoration:underline; transition:color .2s; }
-    .muted a:hover{ color:${({theme})=>theme.colors.brand}; }
+    button {
+        height: 36px;
+        margin-top: 10px;
+        border: none;
+        border-radius: 4px;
+        background: ${({ theme }) => theme.colors.brand};
+        color: #fff;
+        cursor: pointer;
+    }
+    button:disabled {
+        opacity: 0.6;
+        cursor: default;
+    }
+    button:hover {
+        background: ${({ theme }) => theme.colors.hoverBrand};
+    }
 
-    .error{ color:#E24545; text-align:center; margin-top:4px; font-size:14px; }
+    .muted {
+        margin-top: 10px;
+        text-align: center;
+        color: ${({ theme }) => theme.colors.muted};
+        font-size: 14px;
+    }
+    .muted a {
+        color: ${({ theme }) => theme.colors.muted};
+        text-decoration: underline;
+        transition: color 0.2s;
+    }
+    .muted a:hover {
+        color: ${({ theme }) => theme.colors.brand};
+    }
+
+    .error {
+        color: #e24545;
+        text-align: center;
+        margin-top: 4px;
+        font-size: 14px;
+    }
 `;
 
+
+/**
+ * Страница регистрации нового пользователя.
+ * После успешной регистрации выполняет автоматический вход.
+ *
+ * @component
+ * @returns {JSX.Element}
+ */
 export default function Register() {
     const { register, isAuth, loading, error } = useAuth();
     const loc = useLocation();
     const to = loc.state?.from?.pathname || "/";
 
     const [name, setName] = useState("");
-    const [loginStr, setLoginStr] = useState(""); // логин (у них это может быть email)
+    const [loginStr, setLoginStr] = useState("");
     const [password, setPassword] = useState("");
 
     if (isAuth) return <Navigate to={to} replace />;
 
-    async function onSubmit(e){
+    async function onSubmit(e) {
         e.preventDefault();
-        await register({ login: loginStr, name, password });
+
+        const trimName = name.trim();
+        const trimLogin = loginStr.trim();
+        const trimPassword = password.trim();
+
+        if (!trimName || !trimLogin || !trimPassword) return;
+
+        await register({
+            login: trimLogin,
+            name: trimName,
+            password: trimPassword,
+        });
+
     }
 
     return (
@@ -65,21 +130,21 @@ export default function Register() {
                     placeholder="Имя"
                     type="text"
                     value={name}
-                    onChange={e=>setName(e.target.value)}
+                    onChange={(e) => setName(e.target.value)}
                     autoComplete="name"
                 />
                 <input
                     placeholder="Эл. почта (логин)"
                     type="text"
                     value={loginStr}
-                    onChange={e=>setLoginStr(e.target.value)}
+                    onChange={(e) => setLoginStr(e.target.value)}
                     autoComplete="username"
                 />
                 <input
                     placeholder="Пароль"
                     type="password"
                     value={password}
-                    onChange={e=>setPassword(e.target.value)}
+                    onChange={(e) => setPassword(e.target.value)}
                     autoComplete="new-password"
                 />
 

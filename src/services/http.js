@@ -1,5 +1,17 @@
 const BASE_URL = "https://wedev-api.sky.pro/api";
 
+/**
+ * Универсальная функция для выполнения HTTP-запросов.
+ * Добавляет базовый URL, заголовки и обработку ошибок.
+ *
+ * @param {string} path - Путь запроса (без BASE_URL).
+ * @param {Object} [options]
+ * @param {"GET"|"POST"|"PUT"|"DELETE"} [options.method="GET"] - HTTP-метод.
+ * @param {Object} [options.body] - Тело запроса (для POST/PUT).
+ * @param {string} [options.token] - Токен авторизации.
+ * @returns {Promise<Object>} Ответ API.
+ * @throws {Error} Если запрос завершился с ошибкой.
+ */
 async function request(path, { method = "GET", body, token } = {}) {
     const headers = {
         "Content-Type": "" };
@@ -29,6 +41,16 @@ async function request(path, { method = "GET", body, token } = {}) {
     return data ?? {};
 }
 
+/**
+ * Утилита для работы с API.
+ * Предоставляет методы HTTP-запросов (get, post, put, del).
+ *
+ * @namespace http
+ * @property {Function} get
+ * @property {Function} post
+ * @property {Function} put
+ * @property {Function} del
+ */
 export const http = {
     get: (path, opts = {}) => request(path, { ...opts, method: "GET" }),
     post: (path, body, opts = {}) =>

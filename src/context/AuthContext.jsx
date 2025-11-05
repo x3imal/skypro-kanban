@@ -1,13 +1,39 @@
-import { createContext, useContext, useEffect, useMemo, useState, useCallback } from "react";
-import { authApi } from "../services/auth.js";
+import {createContext, useContext, useEffect, useMemo, useState, useCallback} from "react";
+import {authApi} from "../services/auth.js";
 
+
+/**
+ * Контекст авторизации пользователя.
+ * Сохраняет токен, данные пользователя и методы входа/регистрации.
+ *
+ * @returns {{user: (Object|null),
+ * token: (string|null),
+ * isAuth: boolean,
+ * loading: boolean,
+ * error: (string|null),
+ * login: (function(string, string): Promise<Object>),
+ * register: (function(Object): Promise<Object>),
+ * logout: (function(): void),
+ * withAuth: (function(Function): Promise<*>),
+ * listUsers: (function(): Promise<Array>)}|null}
+ */
 // eslint-disable-next-line react-refresh/only-export-components
 export const useAuth = () => useContext(AuthCtx);
 const AuthCtx = createContext(null);
 
 const LS_KEY = "kanban_auth";
 
-export function AuthProvider({ children }) {
+
+/**
+ * Провайдер контекста авторизации.
+ * Инициализирует данные из localStorage и управляет состоянием пользователя.
+ *
+ * @component
+ * @param {Object} props
+ * @param {React.ReactNode} props.children
+ * @returns {JSX.Element}
+ */
+export function AuthProvider({children}) {
     const [user, setUser] = useState(null);
     const [token, setToken] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -31,7 +57,7 @@ export function AuthProvider({ children }) {
     useEffect(() => {
         try {
             if (token) {
-                localStorage.setItem(LS_KEY, JSON.stringify({ user, token }));
+                localStorage.setItem(LS_KEY, JSON.stringify({user, token}));
             } else {
                 localStorage.removeItem(LS_KEY);
             }
@@ -41,9 +67,10 @@ export function AuthProvider({ children }) {
     }, [user, token]);
 
     const login = useCallback(async (loginStr, password) => {
-        setLoading(true); setError(null);
+        setLoading(true);
+        setError(null);
         try {
-            const { user } = await authApi.login({ login: loginStr, password });
+            const {user} = await authApi.login({login: loginStr, password});
             setUser(user);
             setToken(user.token);
             return user;
@@ -55,10 +82,11 @@ export function AuthProvider({ children }) {
         }
     }, []);
 
-    const register = useCallback(async ({ login, name, password }) => {
-        setLoading(true); setError(null);
+    const register = useCallback(async ({login, name, password}) => {
+        setLoading(true);
+        setError(null);
         try {
-            const { user } = await authApi.register({ login, name, password });
+            const {user} = await authApi.register({login, name, password});
             setUser(user);
             setToken(user.token);
             return user;
@@ -71,8 +99,12 @@ export function AuthProvider({ children }) {
     }, []);
 
     const logout = useCallback(() => {
-        setUser(null); setToken(null); setError(null);
-        try { localStorage.removeItem(LS_KEY); } catch (err) {
+        setUser(null);
+        setToken(null);
+        setError(null);
+        try {
+            localStorage.removeItem(LS_KEY);
+        } catch (err) {
             console.warn("Ошибка при очистке localStorage:", err);
         }
     }, []);
